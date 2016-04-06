@@ -1,0 +1,6 @@
+/* Localized versions of Info.plist keys */
+
+CFBundleName = "Radiopaedia";
+CFBundleShortVersionString = "1.0";
+CFBundleGetInfoString = "Radiopaedia version 1.0, Copyright (c) 2016 Jarrel.";
+NSHumanReadableCopyright = "Copyright (c) 2016 Jarrel.";
