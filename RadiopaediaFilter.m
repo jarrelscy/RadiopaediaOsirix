@@ -116,7 +116,36 @@
              
              
              // Post images
+             NSMutableDictionary *paramsDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                                  nil];
+             NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
+             NSString *urlString = [NSString stringWithFormat:@"http://sandbox.radiopaedia.org/api/v1/cases/%@/studies/%@/images", caseId, studyId];
+             NSMutableURLRequest *request2  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:urlString]
+                                                                          paramString:paramStr];
+             request2.HTTPMethod = @"POST";
              
+             NSInteger index =[self.selectedSeries indexOfObject:series];
+             
+             NSString *contentType = [NSString stringWithFormat:@"application/zip"];
+             [request2 addValue:contentType forHTTPHeaderField: @"Content-Type"];
+             
+             NSData *data = [NSData dataWithContentsOfFile:[self.zipFiles objectAtIndex:index]];
+             request2.HTTPBody = data;
+             [auth authorizeRequest:request2 completionHandler:^(NSError *err)
+              {
+                  if (err == nil) {
+                      NSError *requestError = nil;
+                      NSURLResponse *urlResponse = nil;
+                      NSData *response2 =
+                      [NSURLConnection sendSynchronousRequest:request2
+                                            returningResponse:&urlResponse error:&requestError];
+                      NSDictionary *jsonArray = [NSJSONSerialization JSONObjectWithData:response2 options: NSJSONReadingMutableContainers error: &requestError];
+                      
+                  }
+                  else{
+                  }
+                  
+              }];
              
              
          }
@@ -182,7 +211,7 @@
     
     
     // Process dicom series
-    NSNumber *compressionFactor = [NSNumber numberWithFloat:0.9];
+    NSNumber *compressionFactor = [NSNumber numberWithFloat:0.0];
     NSDictionary *imageProps = [NSDictionary dictionaryWithObject:compressionFactor
                                                            forKey:NSImageCompressionFactor];
     
@@ -197,7 +226,7 @@
         
         
         
-        OZZipFile *zipFile= [[OZZipFile alloc] initWithFileName:filename                                                     mode:OZZipFileModeCreate];
+        OZZipFile *zipFile= [[OZZipFile alloc] initWithFileName:filename mode:OZZipFileModeCreate legacy32BitMode:YES];
         
         for (DicomImage *image in [series sortedImages])
         {
