@@ -12,6 +12,7 @@
 #import <OsiriXAPI/DicomImage.h>
 #import <OsiriXAPI/browserController.h>
 #import "GTMOAuth2SignIn.h"
+#import "Objective-Zip.h"
 @implementation RadiopaediaFilter
 
 - (void) initPlugin
@@ -186,7 +187,7 @@
                                                            forKey:NSImageCompressionFactor];
     
     
-    /*
+    
     for (DicomSeries *series in self.selectedSeries)
     {
         NSString *uuidString = [[NSUUID UUID] UUIDString];
@@ -212,7 +213,7 @@
         
         [self.zipFiles addObject:filename];
     }
-    */
+    
     
     NSURL *tokenURL = [NSURL URLWithString:@"http://sandbox.radiopaedia.org/oauth/token"];
     
