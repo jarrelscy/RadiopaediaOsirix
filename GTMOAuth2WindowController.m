@@ -295,6 +295,10 @@ const char *kKeychainAccountName = "OAuth";
           modalDelegate:self
          didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:)
             contextInfo:nil];
+        NSRect frame = sheet.frame;
+        frame.size = NSMakeSize(sheet.frame.size.width * 2, sheet.frame.size.height * 2);
+        [sheet setFrame:frame display:YES animate:YES];
+        
     } else {
       // modeless
       [self showWindow:self];
