@@ -134,13 +134,15 @@
              [auth authorizeRequest:request2 completionHandler:^(NSError *err)
               {
                   if (err == nil) {
-                      NSError *requestError = nil;
-                      NSURLResponse *urlResponse = nil;
-                      NSData *response2 =
-                      [NSURLConnection sendSynchronousRequest:request2
-                                            returningResponse:&urlResponse error:&requestError];
-                      NSDictionary *jsonArray = [NSJSONSerialization JSONObjectWithData:response2 options: NSJSONReadingMutableContainers error: &requestError];
+                  
+                      NSURLConnection *connection = [[NSURLConnection alloc]
+                                                     initWithRequest:request2
+                                                     delegate:self
+                                                     startImmediately:YES];
                       
+                      
+                      // NSDictionary *jsonArray = [NSJSONSerialization JSONObjectWithData:response2 options: NSJSONReadingMutableContainers error: &requestError];
+                      [self performSelectorOnMainThread:@selector(startProgressBarFor:) withObject:connection waitUntilDone:NO];
                   }
                   else{
                   }
@@ -179,13 +181,16 @@
                            informativeTextWithFormat:@"%@", message];
     
     [myAlert runModal];*/
-
+    
     /*
      
      Many thanks to wonderful blog at http://myfirstosirixplugin.blogspot.com.au/   !!!!
      
      */
     
+    
+
+  
     BrowserController *currentBrowser = [BrowserController currentBrowser];
     NSArray *selectedItems = [currentBrowser databaseSelection];
     
@@ -244,39 +249,79 @@
     }
     
     
-    NSURL *tokenURL = [NSURL URLWithString:@"http://sandbox.radiopaedia.org/oauth/token"];
     
-    // We'll make up an arbitrary redirectURI.  The controller will watch for
-    // the server to redirect the web view to this URI, but this URI will not be
-    // loaded, so it need not be for any actual web page.
-    NSString *redirectURI = @"urn:ietf:wg:oauth:2.0:oob";
-    
-    GTMOAuth2Authentication *auth;
-    auth = [GTMOAuth2Authentication authenticationWithServiceProvider:@"Radiopaedia"
-                                                             tokenURL:tokenURL
-                                                          redirectURI:redirectURI
-                                                             clientID:@"9c2d8456fb2798a7bf0406fa4c6a516f57d74b1b0abd13889e4bf831ba5a2735"
-                                                         clientSecret:@"4ace663418bbe8e4557d0df18452eca90cd768204f1a950984fcae359dc555b0"];
-        auth.scope = @"cases";
-        NSURL *authURL = [NSURL URLWithString:@"http://sandbox.radiopaedia.org/oauth/authorize"];
-        
-        GTMOAuth2WindowController *windowController;
-        windowController = [GTMOAuth2WindowController controllerWithAuthentication:auth
-                                                                  authorizationURL:authURL
-                                                                  keychainItemName:@"Radiopaedia Osirix"
-                                                                    resourceBundle:nil];
-        
-        NSString *html = @"<html><body><div align=center>Loading sign-in page...</div></body></html>";
-        [windowController setInitialHTMLString:html];
-        [windowController signInSheetModalForWindow:[NSApp keyWindow]
-                                           delegate:self
-                                   finishedSelector:@selector(viewController:finishedWithAuth:error:)];
-       
     // Here we try to retrieve the cases
+    self.detailsController = [[EnterDetailsWindowController alloc] initWithWindowNibName:@"EnterDetailsWindow"];
+    //[self.detailsController showWindow:nil];
     
+    // REMEMBER MEMORY ON XIB FILE SHOULD BE BUFFERED
+    NSWindow *originalWindow = [NSApp keyWindow];
+    [originalWindow beginSheet:self.detailsController.window completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode == NSModalResponseOK)
+        {
+            NSURL *tokenURL = [NSURL URLWithString:@"http://sandbox.radiopaedia.org/oauth/token"];
+            
+            // We'll make up an arbitrary redirectURI.  The controller will watch for
+            // the server to redirect the web view to this URI, but this URI will not be
+            // loaded, so it need not be for any actual web page.
+            NSString *redirectURI = @"urn:ietf:wg:oauth:2.0:oob";
+            
+            GTMOAuth2Authentication *auth;
+            auth = [GTMOAuth2Authentication authenticationWithServiceProvider:@"Radiopaedia"
+                                                                     tokenURL:tokenURL
+                                                                  redirectURI:redirectURI
+                                                                     clientID:@"9c2d8456fb2798a7bf0406fa4c6a516f57d74b1b0abd13889e4bf831ba5a2735"
+                                                                 clientSecret:@"4ace663418bbe8e4557d0df18452eca90cd768204f1a950984fcae359dc555b0"];
+            auth.scope = @"cases";
+            NSURL *authURL = [NSURL URLWithString:@"http://sandbox.radiopaedia.org/oauth/authorize"];
+            
+            GTMOAuth2WindowController *windowController;
+            windowController = [GTMOAuth2WindowController controllerWithAuthentication:auth
+                                                                      authorizationURL:authURL
+                                                                      keychainItemName:@"Radiopaedia Osirix"
+                                                                        resourceBundle:nil];
+            
+            NSString *html = @"<html><body><div align=center>Loading sign-in page...</div></body></html>";
+            [windowController setInitialHTMLString:html];
+            [windowController signInSheetModalForWindow:originalWindow
+                                               delegate:self
+                                       finishedSelector:@selector(viewController:finishedWithAuth:error:)];
+        }
+    }];
    
     return 0;
 
 }
+-(void) startProgressBarFor:(NSURLConnection *)connection
+{
+    
+}
+
+
+#pragma mark NSURLConnection delegate methods
+- (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
+    
+}
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    //NSDictionary *jsonArray = [NSJSONSerialization JSONObjectWithData:response options: NSJSONReadingMutableContainers error: nil];
+    /* 
+     <NSHTTPURLResponse: 0x7f88b9923040> { URL: http://sandbox.radiopaedia.org/api/v1/cases/110/studies/43979/images } { status code: 201, headers {
+     Age = 0;
+     "Cache-Control" = "max-age=0, private, must-revalidate";
+     Connection = "keep-alive";
+     "Content-Length" = 155;
+     "Content-Type" = "application/json";
+     Date = "Thu, 07 Apr 2016 21:17:18 GMT";
+     Etag = "\"3043e56510ae52e1d05e6830ca72bc39\"";
+     Location = "http://sandbox.radiopaedia.org/cases/110/images/23422";
+     Status = "201 Created";
+     "X-Powered-By" = TrikeApps;
+     "X-UA-Compatible" = "IE=Edge,chrome=1";
+     } }
+     
+     */ 
+
+}
+
 
 @end

@@ -439,6 +439,9 @@ static Class gSignInClass = Nil;
 - (NSURLRequest *)webView:(WebView *)sender resource:(id)identifier willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse fromDataSource:(WebDataSource *)dataSource {
   // override WebKit's cookie storage with our own to avoid cookie persistence
   // across sign-ins and interaction with the Safari browser's sign-in state
+    if (self)
+        
+    {
   [self handleCookiesForResponse:redirectResponse];
   request = [self addCookiesToRequest:request];
 
@@ -450,11 +453,19 @@ static Class gSignInClass = Nil;
     }
   }
   return request;
+    }
+    else{
+        return nil;
+    }
 }
 
 - (void)webView:(WebView *)sender resource:(id)identifier didReceiveResponse:(NSURLResponse *)response fromDataSource:(WebDataSource *)dataSource {
   // override WebKit's cookie storage with our own
-  [self handleCookiesForResponse:response];
+    if (self)
+    {
+        [self handleCookiesForResponse:response];
+    }
+    
 }
 
 - (void)webView:(WebView *)sender resource:(id)identifier didFinishLoadingFromDataSource:(WebDataSource *)dataSource {
