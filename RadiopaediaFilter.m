@@ -40,8 +40,8 @@
         // TODO ASK THE USER WHAT THE TITLE AND SYSTEM ID IS
         
         NSMutableDictionary *paramsDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                           @"Jarrel Plugin Test", @"title",
-                                           @"1", @"system_id",
+                                           [self.detailsController.caseTitleField stringValue], @"title",
+                                           [NSString stringWithFormat:@"%ld", (long)[self.detailsController.systemSelect indexOfSelectedItem]], @"system_id",
                                            nil];
         NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
         NSMutableURLRequest *request  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:@"http://sandbox.radiopaedia.org/api/v1/cases"]
@@ -64,11 +64,14 @@
                  
                  NSString *caseId = [jsonArray objectForKey:@"id"];
                  NSMutableArray *seriesNames = [NSMutableArray array];
+                 self.queuedRequests = [NSMutableArray array];
                  for (DicomSeries *series in self.selectedSeries) {
                      [self processSeries:series with:caseId using:auth];
                      [seriesNames addObject:[series name]];
                  }
                  
+                 // start processing queue of requests
+                 [self startProcessingQueue];
              }
              
              else{
@@ -134,15 +137,7 @@
              [auth authorizeRequest:request2 completionHandler:^(NSError *err)
               {
                   if (err == nil) {
-                  
-                      NSURLConnection *connection = [[NSURLConnection alloc]
-                                                     initWithRequest:request2
-                                                     delegate:self
-                                                     startImmediately:YES];
-                      
-                      
-                      // NSDictionary *jsonArray = [NSJSONSerialization JSONObjectWithData:response2 options: NSJSONReadingMutableContainers error: &requestError];
-                      [self performSelectorOnMainThread:@selector(startProgressBarFor:) withObject:connection waitUntilDone:NO];
+                      [self.queuedRequests addObject:request2];
                   }
                   else{
                   }
@@ -216,7 +211,7 @@
     
     
     // Process dicom series
-    NSNumber *compressionFactor = [NSNumber numberWithFloat:0.0];
+    NSNumber *compressionFactor = [NSNumber numberWithFloat:0.5];
     NSDictionary *imageProps = [NSDictionary dictionaryWithObject:compressionFactor
                                                            forKey:NSImageCompressionFactor];
     
@@ -297,14 +292,44 @@
     
 }
 
+-(void) startProcessingQueue
+{
+    // TODO count total bytes etc and adjust progress bar
+    [self continueProcessingQueue];
 
+}
+-(void) continueProcessingQueue
+{
+    NSURLRequest *request = [self.queuedRequests lastObject];
+    NSURLConnection *connection = [[NSURLConnection alloc]
+                                   initWithRequest:request
+                                   delegate:self
+                                   startImmediately:YES];
+    
+    // NSDictionary *jsonArray = [NSJSONSerialization JSONObjectWithData:response2 options: NSJSONReadingMutableContainers error: &requestError];
+    [self performSelectorOnMainThread:@selector(startProgressBarFor:) withObject:connection waitUntilDone:NO];
+}
 #pragma mark NSURLConnection delegate methods
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
     
 }
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    //NSDictionary *jsonArray = [NSJSONSerialization JSONObjectWithData:response options: NSJSONReadingMutableContainers error: nil];
-    /* 
+    [self.queuedRequests removeLastObject];
+    if ([self.queuedRequests count] > 0)
+    {
+        [self continueProcessingQueue];
+    }
+    else
+    {
+        NSAlert *myAlert = [NSAlert alertWithMessageText:@"Finished upload!"
+                                           defaultButton:@"Ok"
+                                         alternateButton:nil
+                                             otherButton:nil
+                               informativeTextWithFormat:@""];
+        [myAlert runModal];
+
+    }
+    /*
      <NSHTTPURLResponse: 0x7f88b9923040> { URL: http://sandbox.radiopaedia.org/api/v1/cases/110/studies/43979/images } { status code: 201, headers {
      Age = 0;
      "Cache-Control" = "max-age=0, private, must-revalidate";

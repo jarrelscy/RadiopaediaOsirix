@@ -18,9 +18,12 @@
 #import "GTMOAuth2SignIn.h"
 @interface EnterDetailsWindowController : NSWindowController
 {
+
 }
+
 - (void)windowDidLoad;
 -(void) awakeFromNib;
-
+@property (strong) IBOutlet NSTextField *caseTitleField;
+@property (strong) IBOutlet NSPopUpButton *systemSelect;
 - (void)setupSheetTerminationHandling ;
 @end

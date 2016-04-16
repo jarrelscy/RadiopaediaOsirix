@@ -23,8 +23,38 @@
 }
 - (void)windowDidLoad
 {
+ 
+    
+    
     [super windowDidLoad];
-        
+    NSArray *titles = @[@"Empty1",
+                        @"Breast",
+                        @"Vascular",
+                        @"Central Nervous System",
+                        @"Chest",
+                        @"Empty2",
+                        @"Gastrointestinal",
+                        @"Head and Neck",
+                        @"Hepatobiliary",
+                        @"Musculoskeletal",
+                        @"Empty3",
+                        @"Urogenital",
+                        @"Paediatrics",
+                        @"Empty4",
+                        @"Spine",
+                        @"Cardiac",
+                        @"Interventional",
+                        @"Obstetrics",
+                        @"Gynaecology",
+                        @"Haematology",
+                        @"Empty5",
+                        @"Forensic",
+                        @"Oncology",
+                        @"Trauma"];
+    for (NSString *title in titles)
+    {
+        [self.systemSelect addItemWithTitle:title];
+    }
 }
 - (void)setupSheetTerminationHandling {
     NSWindow *sheet = [self window];
