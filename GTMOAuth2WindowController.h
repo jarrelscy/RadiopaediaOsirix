@@ -166,7 +166,7 @@
 // The application and service name to use for saving the auth tokens
 // to the keychain
 @property (nonatomic, copy)   NSString *keychainItemName;
-
+@property (nonatomic) BOOL isClosed;
 // If true, the sign-in will remember which user was last signed in
 //
 // Defaults to false, so showing the sign-in window will always ask for

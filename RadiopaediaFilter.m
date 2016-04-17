@@ -63,11 +63,11 @@
                  NSDictionary *jsonArray = [NSJSONSerialization JSONObjectWithData:response1 options: NSJSONReadingMutableContainers error: &requestError];
                  
                  NSString *caseId = [jsonArray objectForKey:@"id"];
-                 NSMutableArray *seriesNames = [NSMutableArray array];
+                 self.seriesNames = [NSMutableArray array];
                  self.queuedRequests = [NSMutableArray array];
                  for (DicomSeries *series in self.selectedSeries) {
                      [self processSeries:series with:caseId using:auth];
-                     [seriesNames addObject:[series name]];
+                     [self.seriesNames addObject:[series name]];
                  }
                  
                  // start processing queue of requests
@@ -250,8 +250,8 @@
     //[self.detailsController showWindow:nil];
     
     // REMEMBER MEMORY ON XIB FILE SHOULD BE BUFFERED
-    NSWindow *originalWindow = [NSApp keyWindow];
-    [originalWindow beginSheet:self.detailsController.window completionHandler:^(NSModalResponse returnCode) {
+    self.originalWindow = [NSApp keyWindow];
+    [self.originalWindow beginSheet:self.detailsController.window completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseOK)
         {
             NSURL *tokenURL = [NSURL URLWithString:@"http://sandbox.radiopaedia.org/oauth/token"];
@@ -270,15 +270,15 @@
             auth.scope = @"cases";
             NSURL *authURL = [NSURL URLWithString:@"http://sandbox.radiopaedia.org/oauth/authorize"];
             
-            GTMOAuth2WindowController *windowController;
-            windowController = [GTMOAuth2WindowController controllerWithAuthentication:auth
+            
+            self.windowController = [GTMOAuth2WindowController controllerWithAuthentication:auth
                                                                       authorizationURL:authURL
                                                                       keychainItemName:@"Radiopaedia Osirix"
                                                                         resourceBundle:nil];
             
             NSString *html = @"<html><body><div align=center>Loading sign-in page...</div></body></html>";
-            [windowController setInitialHTMLString:html];
-            [windowController signInSheetModalForWindow:originalWindow
+            [self.windowController setInitialHTMLString:html];
+            [self.windowController signInSheetModalForWindow:self.originalWindow
                                                delegate:self
                                        finishedSelector:@selector(viewController:finishedWithAuth:error:)];
         }
@@ -295,12 +295,17 @@
 -(void) startProcessingQueue
 {
     // TODO count total bytes etc and adjust progress bar
+    self.progressController = [[ProgressWindowController alloc] initWithWindowNibName:@"ProgressWindow"];
+    [self.progressController showWindow:nil];
     [self continueProcessingQueue];
 
 }
 -(void) continueProcessingQueue
 {
     NSURLRequest *request = [self.queuedRequests lastObject];
+    NSString *seriesName = [self.seriesNames lastObject];
+    [self.progressController.progressIndicator setDoubleValue:0.0];
+    [self.progressController.seriesLabel setStringValue:seriesName];
     NSURLConnection *connection = [[NSURLConnection alloc]
                                    initWithRequest:request
                                    delegate:self
@@ -311,16 +316,18 @@
 }
 #pragma mark NSURLConnection delegate methods
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
-    
+    [self.progressController.progressIndicator incrementBy:(double)bytesWritten * 100.0 / (double)totalBytesExpectedToWrite];
 }
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     [self.queuedRequests removeLastObject];
+    [self.seriesNames removeLastObject];
     if ([self.queuedRequests count] > 0)
     {
         [self continueProcessingQueue];
     }
     else
     {
+        [self.progressController close];
         NSAlert *myAlert = [NSAlert alertWithMessageText:@"Finished upload!"
                                            defaultButton:@"Ok"
                                          alternateButton:nil

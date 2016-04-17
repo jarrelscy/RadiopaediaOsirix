@@ -120,6 +120,7 @@ const char *kKeychainAccountName = "OAuth";
 
   self = [super initWithWindowNibName:nibName
                                 owner:self];
+    self.isClosed = NO;
   if (self != nil) {
     // use the supplied auth and OAuth endpoint URLs
     Class signInClass = [[self class] signInClass];
@@ -332,8 +333,8 @@ const char *kKeychainAccountName = "OAuth";
 
   // Avoid more callbacks after the close happens, as the window
   // controller may be gone.
-  // [self.webView stopLoading:nil]; //https://groups.google.com/forum/#!msg/gtm-oauth/N6jlOpL9k5g/n4TdrTJyxzcJ
-
+  //[self.webView stopLoading:nil]; //https://groups.google.com/forum/#!msg/gtm-oauth/N6jlOpL9k5g/n4TdrTJyxzcJ
+    self.isClosed = YES;
   NSWindow *parentWindow = self.sheetModalForWindow;
   if (parentWindow) {
     [NSApp endSheet:[self window]];
@@ -439,31 +440,51 @@ static Class gSignInClass = Nil;
 - (NSURLRequest *)webView:(WebView *)sender resource:(id)identifier willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse fromDataSource:(WebDataSource *)dataSource {
   // override WebKit's cookie storage with our own to avoid cookie persistence
   // across sign-ins and interaction with the Safari browser's sign-in state
-    if (self)
-        
+    if (self.isClosed)
     {
-  [self handleCookiesForResponse:redirectResponse];
-  request = [self addCookiesToRequest:request];
-
-  if (!hasDoneFinalRedirect_) {
-    hasDoneFinalRedirect_ = [self.signIn requestRedirectedToRequest:request];
-    if (hasDoneFinalRedirect_) {
-      // signIn has told the window to close
-      return nil;
-    }
-  }
-  return request;
-    }
-    else{
         return nil;
+    }
+    @try
+    {
+          [self handleCookiesForResponse:redirectResponse];
+          request = [self addCookiesToRequest:request];
+
+          if (!hasDoneFinalRedirect_) {
+            hasDoneFinalRedirect_ = [self.signIn requestRedirectedToRequest:request];
+            if (hasDoneFinalRedirect_) {
+              // signIn has told the window to close
+              return nil;
+            }
+            }
+          return request;
+    }
+    @catch (NSException *exception)
+    {
+        return nil;
+    }
+    @finally
+    {
+        
     }
 }
 
 - (void)webView:(WebView *)sender resource:(id)identifier didReceiveResponse:(NSURLResponse *)response fromDataSource:(WebDataSource *)dataSource {
   // override WebKit's cookie storage with our own
-    if (self)
+    if (self.isClosed)
+    {
+        return;
+    }
+    @try
     {
         [self handleCookiesForResponse:response];
+    }
+    @catch (NSException *exception)
+    {
+        
+    }
+    @finally
+    {
+        
     }
     
 }

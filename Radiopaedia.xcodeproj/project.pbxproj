@@ -77,6 +77,9 @@
 		C38C0FAE1CBA5277005BE864 /* EnterDetailsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C38C0FAD1CBA5277005BE864 /* EnterDetailsWindow.xib */; };
 		C38C0FB81CBA5468005BE864 /* EnterDetailsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C38C0FB71CBA5468005BE864 /* EnterDetailsWindowController.m */; };
 		C38C0FBA1CBA5473005BE864 /* EnterDetailsWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = C38C0FB91CBA5473005BE864 /* EnterDetailsWindowController.h */; };
+		C39357CB1CC2698F00B93C21 /* ProgressWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C39357CA1CC2698F00B93C21 /* ProgressWindow.xib */; };
+		C39357CD1CC3AFDD00B93C21 /* ProgressWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C39357CC1CC3AFDD00B93C21 /* ProgressWindowController.m */; };
+		C39357CF1CC3B01900B93C21 /* ProgressWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = C39357CE1CC3B01900B93C21 /* ProgressWindowController.h */; };
 		C3D1EC861CB69999003DF091 /* GTMGatherInputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = C3D1EC731CB69999003DF091 /* GTMGatherInputStream.h */; };
 		C3D1EC871CB69999003DF091 /* GTMGatherInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = C3D1EC741CB69999003DF091 /* GTMGatherInputStream.m */; };
 		C3D1EC881CB69999003DF091 /* GTMHTTPFetcher.h in Headers */ = {isa = PBXBuildFile; fileRef = C3D1EC751CB69999003DF091 /* GTMHTTPFetcher.h */; };
@@ -173,6 +176,9 @@
 		C38C0FAD1CBA5277005BE864 /* EnterDetailsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EnterDetailsWindow.xib; sourceTree = "<group>"; };
 		C38C0FB71CBA5468005BE864 /* EnterDetailsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnterDetailsWindowController.m; sourceTree = "<group>"; };
 		C38C0FB91CBA5473005BE864 /* EnterDetailsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnterDetailsWindowController.h; sourceTree = "<group>"; };
+		C39357CA1CC2698F00B93C21 /* ProgressWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProgressWindow.xib; sourceTree = "<group>"; };
+		C39357CC1CC3AFDD00B93C21 /* ProgressWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressWindowController.m; sourceTree = "<group>"; };
+		C39357CE1CC3B01900B93C21 /* ProgressWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressWindowController.h; sourceTree = "<group>"; };
 		C3D1EC731CB69999003DF091 /* GTMGatherInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMGatherInputStream.h; sourceTree = "<group>"; };
 		C3D1EC741CB69999003DF091 /* GTMGatherInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGatherInputStream.m; sourceTree = "<group>"; };
 		C3D1EC751CB69999003DF091 /* GTMHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcher.h; sourceTree = "<group>"; };
@@ -309,7 +315,10 @@
 				ABA48A660680BB690089EB4F /* RadiopaediaFilter.m */,
 				C38C0FB71CBA5468005BE864 /* EnterDetailsWindowController.m */,
 				C38C0FB91CBA5473005BE864 /* EnterDetailsWindowController.h */,
+				C39357CE1CC3B01900B93C21 /* ProgressWindowController.h */,
+				C39357CC1CC3AFDD00B93C21 /* ProgressWindowController.m */,
 				C38C0FAD1CBA5277005BE864 /* EnterDetailsWindow.xib */,
+				C39357CA1CC2698F00B93C21 /* ProgressWindow.xib */,
 				C3292B9D1CB69BB5001F4F71 /* crypt.h */,
 				C3292B9E1CB69BB5001F4F71 /* ioapi.c */,
 				C3292B9F1CB69BB5001F4F71 /* ioapi.h */,
@@ -418,6 +427,7 @@
 				C3292C0E1CB69BF4001F4F71 /* zutil.h in Headers */,
 				C3D1EC8A1CB69999003DF091 /* GTMHTTPFetcherLogging.h in Headers */,
 				C3D1EC8E1CB69999003DF091 /* GTMHTTPFetchHistory.h in Headers */,
+				C39357CF1CC3B01900B93C21 /* ProgressWindowController.h in Headers */,
 				C3292BC91CB69BE7001F4F71 /* OZZipException.h in Headers */,
 				C3292BCE1CB69BE7001F4F71 /* OZZipFile+NSError.h in Headers */,
 				C3292C0B1CB69BF4001F4F71 /* zconf.h in Headers */,
@@ -484,6 +494,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C39357CB1CC2698F00B93C21 /* ProgressWindow.xib in Resources */,
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
 				C3D1EC941CB69999003DF091 /* GTMOAuth2Window.xib in Resources */,
 				C38C0FAE1CBA5277005BE864 /* EnterDetailsWindow.xib in Resources */,
@@ -533,6 +544,7 @@
 				C3292BA71CB69BB5001F4F71 /* unzip.c in Sources */,
 				C3292B961CB69A09001F4F71 /* GTMOAuth2SignIn.m in Sources */,
 				C3292BC61CB69BE7001F4F71 /* OZFileInZipInfo.m in Sources */,
+				C39357CD1CC3AFDD00B93C21 /* ProgressWindowController.m in Sources */,
 				C3292BF61CB69BF4001F4F71 /* compress.c in Sources */,
 				C3292C001CB69BF4001F4F71 /* infback.c in Sources */,
 				C3D1EC981CB69999003DF091 /* GTMReadMonitorInputStream.m in Sources */,
@@ -577,6 +589,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Radiopaedia_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"GTM_ALLOW_INSECURE_REQUESTS=1",
+					"GTM_AUTHORIZE_URL=\\@\\\"http://sandbox.radiopaedia.org/oauth/authorize\\\"",
+				);
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
 				GCC_WARN_UNKNOWN_PRAGMAS = NO;
 				HEADER_SEARCH_PATHS = "";
@@ -617,6 +633,10 @@
 				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Radiopaedia_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"GTM_ALLOW_INSECURE_REQUESTS=1",
+					"GTM_AUTHORIZE_URL=\\@\\\"http://sandbox.radiopaedia.org/oauth/authorize\\\"",
+				);
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
 				GCC_WARN_UNKNOWN_PRAGMAS = NO;
 				HEADER_SEARCH_PATHS = "";

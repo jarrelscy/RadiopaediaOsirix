@@ -387,7 +387,7 @@ finishedWithFetcher:(GTMOAuth2Fetcher *)fetcher
 
   // compare the redirectURI, which tells us when the web sign-in is done,
   // to the actual redirection
-  NSURL *redirectURL = [NSURL URLWithString:@"http://sandbox.radiopaedia.org/oauth/authorize"]; // edited to hard code radiopaedia sandbox for now
+    NSURL *redirectURL = [NSURL URLWithString:GTM_AUTHORIZE_URL]; // edited to hard code radiopaedia sandbox for now
   NSURL *requestURL = [redirectedRequest URL];
 
   // avoid comparing to nil host and path values (such as when redirected to
