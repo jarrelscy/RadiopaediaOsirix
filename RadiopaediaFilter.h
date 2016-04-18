@@ -12,6 +12,7 @@
 @interface RadiopaediaFilter : PluginFilter {
     
 }
+@property  (nonatomic, strong) NSMutableArray *selectedStudies;
 @property  (nonatomic, strong) NSMutableArray *selectedSeries; // needs to be accessible in the block and also make sure ARC doesn't zombify the thing 
 @property (nonatomic, strong) NSMutableArray *zipFiles;
 @property (nonatomic, strong) NSMutableArray *seriesNames;
@@ -25,7 +26,7 @@
 -(void) alert:(NSArray *)info;
 
 - (long) filterImage:(NSString*) menuName;
-- (void) processSeries:(DicomSeries*) series with:(NSString *)caseId;
+- (void) processSeriesArray:(NSMutableArray*) seriesArray with:(NSString *)caseId using:(GTMOAuth2Authentication *)auth withDicom:(DicomStudy *)study;
 -(void) startProgressBarFor:(NSURLConnection *)connection;
 -(void) startProcessingQueue;
 -(void) continueProcessingQueue;

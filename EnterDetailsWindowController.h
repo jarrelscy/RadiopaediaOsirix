@@ -25,5 +25,7 @@
 -(void) awakeFromNib;
 @property (strong) IBOutlet NSTextField *caseTitleField;
 @property (strong) IBOutlet NSPopUpButton *systemSelect;
+@property (strong) IBOutlet NSTextField *ageField;
+@property (strong) IBOutlet NSPopUpButton *genderSelect;
 - (void)setupSheetTerminationHandling ;
 @end

@@ -7,7 +7,9 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="EnterDetailsWindowController">
             <connections>
+                <outlet property="ageField" destination="uIx-CI-to5" id="th4-9J-ESp"/>
                 <outlet property="caseTitleField" destination="Bhe-6Y-W2c" id="bd2-DZ-DL8"/>
+                <outlet property="genderSelect" destination="D2L-dq-VUC" id="ygM-uI-958"/>
                 <outlet property="systemSelect" destination="ZkH-Wz-CKe" id="rD5-Jg-ThQ"/>
                 <outlet property="textField" destination="Bhe-6Y-W2c" id="IsX-p1-EHs"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="aaQ-1R-Z41"/>
@@ -22,7 +24,7 @@
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
-                <autoresizingMask key="autoresizingMask"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g0K-Wk-NbD">
                         <rect key="frame" x="194" y="13" width="81" height="32"/>
@@ -69,12 +71,50 @@ DQ
                             <menu key="menu" id="Sbe-oV-GkI"/>
                         </popUpButtonCell>
                     </popUpButton>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IuP-O0-f4v">
+                        <rect key="frame" x="18" y="161" width="32" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Age:" id="aWT-Dc-19A">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rQt-h4-dRk">
+                        <rect key="frame" x="18" y="127" width="53" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Gender:" id="V3O-b0-P7e">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="D2L-dq-VUC">
+                        <rect key="frame" x="94" y="120" width="76" height="26"/>
+                        <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="9Yd-nE-pga">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" id="wA4-cS-poO">
+                                <items>
+                                    <menuItem title="Male" id="1Qq-TH-cVr"/>
+                                    <menuItem title="Female" id="irt-DU-rlh"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                    </popUpButton>
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uIx-CI-to5">
+                        <rect key="frame" x="96" y="156" width="96" height="22"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="X0G-R9-iDf">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
             </view>
             <point key="canvasLocation" x="641" y="257"/>
         </window>
-        <menuItem title="Item 1" id="3BR-Kg-7Ca"/>
         <menuItem title="Item 2" id="8gm-Cb-vy2"/>
         <menuItem title="Item 3" id="ZqO-C3-vq0"/>
+        <menuItem title="Item 3" id="vmh-Vn-XvZ"/>
+        <menuItem title="Unknown" id="3BR-Kg-7Ca"/>
     </objects>
 </document>

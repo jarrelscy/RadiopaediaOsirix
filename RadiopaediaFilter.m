@@ -37,11 +37,12 @@
     } else {
         
         
-        // TODO ASK THE USER WHAT THE TITLE AND SYSTEM ID IS
         
         NSMutableDictionary *paramsDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                            [self.detailsController.caseTitleField stringValue], @"title",
                                            [NSString stringWithFormat:@"%ld", (long)[self.detailsController.systemSelect indexOfSelectedItem]], @"system_id",
+                                           [self.detailsController.ageField stringValue], @"age",
+                                           [self.detailsController.genderSelect titleOfSelectedItem], @"gender",
                                            nil];
         NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
         NSMutableURLRequest *request  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:@"http://sandbox.radiopaedia.org/api/v1/cases"]
@@ -65,9 +66,10 @@
                  NSString *caseId = [jsonArray objectForKey:@"id"];
                  self.seriesNames = [NSMutableArray array];
                  self.queuedRequests = [NSMutableArray array];
-                 for (DicomSeries *series in self.selectedSeries) {
-                     [self processSeries:series with:caseId using:auth];
-                     [self.seriesNames addObject:[series name]];
+                 NSUInteger i = 0;
+                 for (NSMutableArray *seriesArray in self.selectedSeries) {
+                     [self processSeriesArray:seriesArray with:caseId using:auth withDicom:[self.selectedStudies objectAtIndex:i]];
+                     i++;
                  }
                  
                  // start processing queue of requests
@@ -91,17 +93,54 @@
     }
 }
 
-
-- (void) processSeries:(DicomSeries*) series with:(NSString *)caseId using:(GTMOAuth2Authentication *)auth {
+-(NSString *) parse:(NSString *)modality
+{
+    if ([modality isEqualToString:@"MR"])
+    {
+        return @"MRI";
+    }
+    else if ([modality isEqualToString:@"US"])
+    {
+        return @"Ultrasound";
+    }
+    else if ([modality isEqualToString:@"MG"])
+    {
+        return @"Mammography";
+    }
+    else if ([modality isEqualToString:@"XA"])
+    {
+        return @"DSA (angiography)";
+    }
+    else if ([modality isEqualToString:@"NM"])
+    {
+        return @"Nuclear medicine";
+    }
+    else if ([modality isEqualToString:@"CR"])
+    {
+        return @"X-ray";
+    }
+    else if ([modality isEqualToString:@"RF"])
+    {
+        return @"Fluoroscopy";
+    }
+    else
+    {
+        return modality;
+    }
+}
+- (void) processSeriesArray:(NSMutableArray*) seriesArray with:(NSString *)caseId using:(GTMOAuth2Authentication *)auth withDicom:(DicomStudy *)study {
+    
+    
+    
     NSMutableDictionary *paramsDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                       [series modality], @"modality",
-                                       [series name], @"caption",
+                                       [self parse:[study modality]], @"modality",
                                        nil];
     NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
     NSString *urlString = [NSString stringWithFormat:@"http://sandbox.radiopaedia.org/api/v1/cases/%@/studies", caseId];
     NSMutableURLRequest *request  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:urlString]
                                                                   paramString:paramStr];
     request.HTTPMethod = @"POST";
+    
     [auth authorizeRequest:request completionHandler:^(NSError *err)
      {
          
@@ -116,44 +155,49 @@
              NSDictionary *jsonArray = [NSJSONSerialization JSONObjectWithData:response1 options: NSJSONReadingMutableContainers error: &requestError];
              
              NSString *studyId = [jsonArray objectForKey:@"id"];
+             NSUInteger seriesArrayIndex = [self.selectedSeries indexOfObject:seriesArray];
              
-             
-             // Post images
-             NSMutableDictionary *paramsDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                                  nil];
-             NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
-             NSString *urlString = [NSString stringWithFormat:@"http://sandbox.radiopaedia.org/api/v1/cases/%@/studies/%@/images", caseId, studyId];
-             NSMutableURLRequest *request2  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:urlString]
-                                                                          paramString:paramStr];
-             request2.HTTPMethod = @"POST";
-             
-             NSInteger index =[self.selectedSeries indexOfObject:series];
-             
-             NSString *contentType = [NSString stringWithFormat:@"application/zip"];
-             [request2 addValue:contentType forHTTPHeaderField: @"Content-Type"];
-             
-             NSData *data = [NSData dataWithContentsOfFile:[self.zipFiles objectAtIndex:index]];
-             request2.HTTPBody = data;
-             [auth authorizeRequest:request2 completionHandler:^(NSError *err)
-              {
-                  if (err == nil) {
-                      [self.queuedRequests addObject:request2];
-                  }
-                  else{
-                  }
-                  
-              }];
+             // Post image stack (series)
+             NSUInteger seriesIndex =0;
+             for (DicomSeries *series in seriesArray)
+             {
+                 NSMutableDictionary *paramsDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                                      nil];
+                 NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
+                 NSString *urlString = [NSString stringWithFormat:@"http://sandbox.radiopaedia.org/api/v1/cases/%@/studies/%@/images", caseId, studyId];
+                 NSMutableURLRequest *request2  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:urlString]
+                                                                              paramString:paramStr];
+                 request2.HTTPMethod = @"POST";
+                 
+                 
+                 NSString *contentType = [NSString stringWithFormat:@"application/zip"];
+                 [request2 addValue:contentType forHTTPHeaderField: @"Content-Type"];
+                 
+                 NSData *data = [NSData dataWithContentsOfFile:[self.zipFiles[seriesArrayIndex] objectAtIndex:seriesIndex]];
+                 request2.HTTPBody = data;
+                 [auth authorizeRequest:request2 completionHandler:^(NSError *err)
+                  {
+                      if (err == nil) {
+                          [self.queuedRequests addObject:request2];
+                      }
+                      else{
+                      }
+                      
+                  }];
+                 [self.seriesNames addObject:[series name]];
+                 seriesIndex++;
+             }
              
              
          }
          
          else{
              // Failed to authorize for some reason
-             NSAlert *myAlert = [NSAlert alertWithMessageText:@"Error uploading series!"
+             NSAlert *myAlert = [NSAlert alertWithMessageText:@"Error uploading study!"
                                                 defaultButton:@"Ok"
                                               alternateButton:nil
                                                   otherButton:nil
-                                    informativeTextWithFormat:@"Failed to upload %@: %@",[series name], [err description]];
+                                    informativeTextWithFormat:@"Failed to upload %@: %@",[study name], [err description]];
              
              [myAlert runModal];
          }
@@ -195,18 +239,45 @@
         [alert runModal];
         
         return 1;
-    }    
+    }
+    
+    self.selectedStudies = [NSMutableArray array];
     self.selectedSeries = [NSMutableArray array];
     self.zipFiles = [NSMutableArray array];
     for (id item in selectedItems) {
         if ([item isKindOfClass:[DicomStudy class]]) {
             DicomStudy *study = (DicomStudy*) item;
             
+            [self.selectedStudies addObject:study];
+            
+            NSMutableArray *tempArray = [NSMutableArray array];
+            [self.selectedSeries addObject:tempArray];
+            
             for (DicomSeries *series in [study imageSeries])
-                [self.selectedSeries addObject:series];
+            {
+                [tempArray addObject:series];
+            }
             
         } else if ([item isKindOfClass:[DicomSeries class]])
-            [self.selectedSeries addObject:(DicomSeries*) item];
+        {
+            DicomSeries *series = (DicomSeries *)item;
+            NSMutableArray *tempArray;
+            if (![self.selectedStudies containsObject:[series study]])
+              {
+                  // insert new study and create temp array
+                  [self.selectedStudies addObject:[series study]];
+                  tempArray = [NSMutableArray array];
+                  [self.selectedSeries addObject:tempArray];
+              }
+            else
+            {
+                // get previous temp array
+                NSUInteger *i = [self.selectedStudies indexOfObject:[series study]];
+                tempArray = [self.selectedSeries objectAtIndex:i];
+            }
+            
+            [tempArray addObject:(DicomSeries*) item];
+        }
     }
     
     
@@ -217,30 +288,35 @@
     
     
     
-    for (DicomSeries *series in self.selectedSeries)
+    for (NSMutableArray *seriesArray in self.selectedSeries)
     {
-        NSString *uuidString = [[NSUUID UUID] UUIDString];
-        NSString *filename =
-        [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-radiopaedia.zip", uuidString]];
-        
-        
-        
-        
-        OZZipFile *zipFile= [[OZZipFile alloc] initWithFileName:filename mode:OZZipFileModeCreate legacy32BitMode:YES];
-        
-        for (DicomImage *image in [series sortedImages])
+        NSMutableArray *tempArray = [NSMutableArray array];
+        [self.zipFiles addObject:tempArray];
+        for (DicomSeries *series in seriesArray)
         {
-            NSImageRep *imageRep = [[[image image] representations] objectAtIndex:0];
-            NSData *imageData = [imageRep representationUsingType:NSJPEGFileType properties:imageProps];
-            NSString *imageName = [NSString stringWithFormat:@"%@.jpg", [[image instanceNumber] stringValue]];
-            OZZipWriteStream *stream= [zipFile writeFileInZipWithName:imageName
-                                                     compressionLevel:OZZipCompressionLevelBest];
-            [stream writeData:imageData];
-            [stream finishedWriting];
+            NSString *uuidString = [[NSUUID UUID] UUIDString];
+            NSString *filename =
+            [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-radiopaedia.zip", uuidString]];
+            
+            
+            
+            
+            OZZipFile *zipFile= [[OZZipFile alloc] initWithFileName:filename mode:OZZipFileModeCreate legacy32BitMode:YES];
+            
+            for (DicomImage *image in [series sortedImages])
+            {
+                NSImageRep *imageRep = [[[image image] representations] objectAtIndex:0];
+                NSData *imageData = [imageRep representationUsingType:NSJPEGFileType properties:imageProps];
+                NSString *imageName = [NSString stringWithFormat:@"%@.jpg", [[image instanceNumber] stringValue]];
+                OZZipWriteStream *stream= [zipFile writeFileInZipWithName:imageName
+                                                         compressionLevel:OZZipCompressionLevelBest];
+                [stream writeData:imageData];
+                [stream finishedWriting];
+            }
+            [zipFile close];
+            
+            [tempArray addObject:filename];
         }
-        [zipFile close];
-        
-        [self.zipFiles addObject:filename];
     }
     
     
