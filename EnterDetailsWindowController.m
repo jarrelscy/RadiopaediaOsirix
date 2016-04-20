@@ -9,7 +9,6 @@
 
 
 #import "EnterDetailsWindowController.h"
-
 @implementation EnterDetailsWindowController
 
 -(void) awakeFromNib

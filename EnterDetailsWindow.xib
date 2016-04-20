@@ -9,7 +9,9 @@
             <connections>
                 <outlet property="ageField" destination="uIx-CI-to5" id="th4-9J-ESp"/>
                 <outlet property="caseTitleField" destination="Bhe-6Y-W2c" id="bd2-DZ-DL8"/>
+                <outlet property="discussionField" destination="m9y-gZ-9RL" id="rb5-rL-dap"/>
                 <outlet property="genderSelect" destination="D2L-dq-VUC" id="ygM-uI-958"/>
+                <outlet property="presentationField" destination="zIQ-Yr-Y2P" id="vmA-eq-Rei"/>
                 <outlet property="systemSelect" destination="ZkH-Wz-CKe" id="rD5-Jg-ThQ"/>
                 <outlet property="textField" destination="Bhe-6Y-W2c" id="IsX-p1-EHs"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="aaQ-1R-Z41"/>
@@ -20,14 +22,14 @@
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="480" height="270"/>
+            <rect key="contentRect" x="196" y="240" width="573" height="424"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                <rect key="frame" x="0.0" y="0.0" width="573" height="424"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g0K-Wk-NbD">
-                        <rect key="frame" x="194" y="13" width="81" height="32"/>
+                        <rect key="frame" x="246" y="13" width="81" height="32"/>
                         <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ztH-A6-m99">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -40,7 +42,7 @@ DQ
                         </connections>
                     </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DMJ-Ia-Vkc">
-                        <rect key="frame" x="18" y="233" width="72" height="17"/>
+                        <rect key="frame" x="18" y="387" width="72" height="17"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Case Title: " id="BKf-TY-cbv">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -48,7 +50,7 @@ DQ
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bhe-6Y-W2c">
-                        <rect key="frame" x="96" y="230" width="229" height="22"/>
+                        <rect key="frame" x="136" y="384" width="229" height="22"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="COi-lZ-G23">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -56,7 +58,7 @@ DQ
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Mu-wM-na6">
-                        <rect key="frame" x="18" y="197" width="72" height="17"/>
+                        <rect key="frame" x="18" y="351" width="72" height="17"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="System:" id="ltP-fW-Tbs">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -64,7 +66,7 @@ DQ
                         </textFieldCell>
                     </textField>
                     <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZkH-Wz-CKe">
-                        <rect key="frame" x="94" y="190" width="234" height="26"/>
+                        <rect key="frame" x="134" y="346" width="234" height="26"/>
                         <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="dCt-X2-nqk">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu"/>
@@ -72,7 +74,7 @@ DQ
                         </popUpButtonCell>
                     </popUpButton>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IuP-O0-f4v">
-                        <rect key="frame" x="18" y="161" width="32" height="17"/>
+                        <rect key="frame" x="18" y="315" width="32" height="17"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Age:" id="aWT-Dc-19A">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -80,7 +82,7 @@ DQ
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rQt-h4-dRk">
-                        <rect key="frame" x="18" y="127" width="53" height="17"/>
+                        <rect key="frame" x="18" y="281" width="53" height="17"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Gender:" id="V3O-b0-P7e">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -88,12 +90,13 @@ DQ
                         </textFieldCell>
                     </textField>
                     <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="D2L-dq-VUC">
-                        <rect key="frame" x="94" y="120" width="76" height="26"/>
+                        <rect key="frame" x="134" y="275" width="76" height="26"/>
                         <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="9Yd-nE-pga">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu"/>
                             <menu key="menu" id="wA4-cS-poO">
                                 <items>
+                                    <menuItem title="Unknown" id="3BR-Kg-7Ca"/>
                                     <menuItem title="Male" id="1Qq-TH-cVr"/>
                                     <menuItem title="Female" id="irt-DU-rlh"/>
                                 </items>
@@ -101,20 +104,51 @@ DQ
                         </popUpButtonCell>
                     </popUpButton>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uIx-CI-to5">
-                        <rect key="frame" x="96" y="156" width="96" height="22"/>
+                        <rect key="frame" x="136" y="312" width="96" height="22"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="X0G-R9-iDf">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H6g-43-WPi">
+                        <rect key="frame" x="18" y="252" width="85" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Presentation:" id="3TV-e5-rgd">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zIQ-Yr-Y2P">
+                        <rect key="frame" x="136" y="201" width="417" height="68"/>
+                        <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="qY0-Mq-iR3">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m9y-gZ-9RL">
+                        <rect key="frame" x="136" y="80" width="417" height="103"/>
+                        <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="wED-8I-iCk">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xgm-Ul-tHZ">
+                        <rect key="frame" x="18" y="166" width="74" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Discussion:" id="w9y-wf-aL3">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="641" y="257"/>
+            <point key="canvasLocation" x="687.5" y="334"/>
         </window>
         <menuItem title="Item 2" id="8gm-Cb-vy2"/>
         <menuItem title="Item 3" id="ZqO-C3-vq0"/>
         <menuItem title="Item 3" id="vmh-Vn-XvZ"/>
-        <menuItem title="Unknown" id="3BR-Kg-7Ca"/>
     </objects>
 </document>

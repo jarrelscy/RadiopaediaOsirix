@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RadiopaediaFilter.m"
-            timestampString = "482677642.862159"
+            timestampString = "482828944.665758"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "128"
-            endingLineNumber = "128"
+            startingLineNumber = "323"
+            endingLineNumber = "323"
             landmarkName = "-processSeriesArray:with:using:withDicom:"
             landmarkType = "5">
          </BreakpointContent>
@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RadiopaediaFilter.m"
-            timestampString = "482677642.862159"
+            timestampString = "482828944.665758"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "188"
-            endingLineNumber = "188"
+            startingLineNumber = "383"
+            endingLineNumber = "383"
             landmarkName = "-filterImage:"
             landmarkType = "5">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RadiopaediaFilter.m"
-            timestampString = "482240255.472615"
+            timestampString = "482828944.665758"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
             landmarkName = "-viewController:finishedWithAuth:error:"
             landmarkType = "5">
          </BreakpointContent>
@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RadiopaediaFilter.m"
-            timestampString = "482238051.81978"
+            timestampString = "482828944.665758"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
+            startingLineNumber = "210"
+            endingLineNumber = "210"
             landmarkName = "-viewController:finishedWithAuth:error:"
             landmarkType = "5">
          </BreakpointContent>
@@ -186,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RadiopaediaFilter.m"
-            timestampString = "482678062.814042"
+            timestampString = "482833486.181795"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "288"
-            endingLineNumber = "288"
+            startingLineNumber = "488"
+            endingLineNumber = "488"
             landmarkName = "-filterImage:"
             landmarkType = "5">
          </BreakpointContent>
@@ -202,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RadiopaediaFilter.m"
-            timestampString = "482677010.039115"
+            timestampString = "482828944.665758"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "109"
-            endingLineNumber = "109"
+            startingLineNumber = "304"
+            endingLineNumber = "304"
             landmarkName = "-processSeriesArray:with:using:withDicom:"
             landmarkType = "5">
          </BreakpointContent>
@@ -218,11 +218,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RadiopaediaFilter.m"
-            timestampString = "482678062.814042"
+            timestampString = "482833486.181795"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "361"
-            endingLineNumber = "361"
+            startingLineNumber = "561"
+            endingLineNumber = "561"
             landmarkName = "-connection:didSendBodyData:totalBytesWritten:totalBytesExpectedToWrite:"
             landmarkType = "5">
          </BreakpointContent>
@@ -234,11 +234,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RadiopaediaFilter.m"
-            timestampString = "482678062.814042"
+            timestampString = "482833486.181795"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "351"
-            endingLineNumber = "351"
+            startingLineNumber = "551"
+            endingLineNumber = "551"
             landmarkName = "-continueProcessingQueue"
             landmarkType = "5">
          </BreakpointContent>
@@ -260,11 +260,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RadiopaediaFilter.m"
-            timestampString = "482678062.814042"
+            timestampString = "482833486.181795"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "363"
-            endingLineNumber = "363"
+            startingLineNumber = "563"
+            endingLineNumber = "563"
             landmarkName = "-connection:didReceiveResponse:"
             landmarkType = "5">
          </BreakpointContent>
@@ -276,11 +276,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RadiopaediaFilter.m"
-            timestampString = "482678062.814042"
+            timestampString = "482833486.181795"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "339"
-            endingLineNumber = "339"
+            startingLineNumber = "539"
+            endingLineNumber = "539"
             landmarkName = "-startProcessingQueue"
             landmarkType = "5">
          </BreakpointContent>
@@ -292,11 +292,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RadiopaediaFilter.m"
-            timestampString = "482677677.673344"
+            timestampString = "482828944.665758"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "213"
-            endingLineNumber = "213"
+            startingLineNumber = "408"
+            endingLineNumber = "408"
             landmarkName = "-filterImage:"
             landmarkType = "5">
             <Locations>
@@ -308,11 +308,11 @@
                   moduleName = "Radiopaedia"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Administrator/Documents/RadiopaediaNoPod/RadiopaediaOsirix/RadiopaediaFilter.m"
-                  timestampString = "482678083.420976"
+                  timestampString = "482829719.768341"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "213"
-                  endingLineNumber = "213"
+                  startingLineNumber = "408"
+                  endingLineNumber = "408"
                   offsetFromSymbolStart = "514">
                </Location>
                <Location
@@ -323,14 +323,46 @@
                   moduleName = "Radiopaedia"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Administrator/Documents/RadiopaediaNoPod/RadiopaediaOsirix/RadiopaediaFilter.m"
-                  timestampString = "482678083.421142"
+                  timestampString = "482829719.768499"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "213"
-                  endingLineNumber = "213"
+                  startingLineNumber = "408"
+                  endingLineNumber = "408"
                   offsetFromSymbolStart = "543">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RadiopaediaFilter.m"
+            timestampString = "482833486.181795"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "474"
+            endingLineNumber = "474"
+            landmarkName = "-filterImage:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RadiopaediaFilter.m"
+            timestampString = "482833884.986533"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "469"
+            endingLineNumber = "469"
+            landmarkName = "-filterImage:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

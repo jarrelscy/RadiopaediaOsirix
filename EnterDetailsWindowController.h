@@ -27,5 +27,7 @@
 @property (strong) IBOutlet NSPopUpButton *systemSelect;
 @property (strong) IBOutlet NSTextField *ageField;
 @property (strong) IBOutlet NSPopUpButton *genderSelect;
+@property (strong) IBOutlet NSTextField *presentationField;
+@property (strong) IBOutlet NSTextField *discussionField;
 - (void)setupSheetTerminationHandling ;
 @end
