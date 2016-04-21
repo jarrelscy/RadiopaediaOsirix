@@ -11,6 +11,7 @@
 #import <OsiriXAPI/DicomSeries.h>
 #import <OsiriXAPI/DicomImage.h>
 #import <OsiriXAPI/browserController.h>
+#import <OsiriXAPI/DCMPix.h>
 #import "GTMOAuth2SignIn.h"
 #import "Objective-Zip.h"
 #import <objc/runtime.h>
@@ -215,19 +216,29 @@
              if (err == nil) {
                  // the request has been authorized
                  
-                 NSError *requestError = nil;
-                 NSURLResponse *urlResponse = nil;
-                 NSData *response1 =
-                 [NSURLConnection sendSynchronousRequest:request
-                                       returningResponse:&urlResponse error:&requestError];
-                 NSDictionary *jsonArray = [NSJSONSerialization JSONObjectWithData:response1 options: NSJSONReadingMutableContainers error: &requestError];
-                 
-                 NSString *caseId = [jsonArray objectForKey:@"id"];
+                 if ([self.detailsController.caserIDField stringValue] != nil && [[self.detailsController.caserIDField stringValue] length] > 0)
+                 {
+                     self.caseId = [self.detailsController.caserIDField stringValue];
+                     self.returnedCaseTitle = [self.detailsController.caseTitleField stringValue];
+                 }
+                 else
+                 {
+                     NSError *requestError = nil;
+                     NSURLResponse *urlResponse = nil;
+                     NSData *response1 =
+                     [NSURLConnection sendSynchronousRequest:request
+                                           returningResponse:&urlResponse error:&requestError];
+                     NSDictionary *jsonArray = [NSJSONSerialization JSONObjectWithData:response1 options: NSJSONReadingMutableContainers error: &requestError];
+                     
+                     NSString *caseId = [jsonArray objectForKey:@"id"];
+                     self.caseId = caseId;
+                     self.returnedCaseTitle = [jsonArray objectForKey:@"title"];
+                 }
                  self.seriesNames = [NSMutableArray array];
                  self.queuedRequests = [NSMutableArray array];
                  NSUInteger i = 0;
                  for (NSMutableArray *seriesArray in self.selectedSeries) {
-                     [self processSeriesArray:seriesArray with:caseId using:auth withDicom:[self.selectedStudies objectAtIndex:i]];
+                     [self processSeriesArray:seriesArray with:self.caseId using:auth withDicom:[self.selectedStudies objectAtIndex:i]];
                      i++;
                  }
                  
@@ -467,17 +478,25 @@
             for (DicomImage *image in [series sortedImages])
             {
                 NSImage *im = [image image];
-                //if (!im)
-                //{
-                //    im = [image imageAsScreenCapture:NSMakeRect(0,0,image.storedWidth.floatValue,image.storedHeight.floatValue)]; // Horos image.image doesn't work
-                //}
-                NSImageRep *imageRep = [[im representations] objectAtIndex:0];
+                NSImageRep *imageRep;
+                if (YES)
+                {
+                    //im = [image imageAsScreenCapture:NSMakeRect(0,0,image.storedWidth.floatValue,image.storedHeight.floatValue)]; // Horos image.image doesn't work this method however puts annotations on it
+                    
+                    DCMPix *pix = [[DCMPix alloc] initWithPath:image.completePath :0 :1 :nil :0 :[[image valueForKeyPath:@"series.id"] intValue] isBonjour:NO imageObj:image];
+                    [pix pwidth]; //FOR SOME WEIRD REASON YOU NEED TO ACCESS THIS FIRST BEFORE pix image gives anything but nil on horos wtf?!?!?
+                    NSData	*data = [[pix image] TIFFRepresentation];
+                    im = [[[NSImage alloc] initWithData: data] autorelease];
+                }
+                imageRep = [[im representations] objectAtIndex:0];
+                
+                
                 NSData *imageData = [imageRep representationUsingType:NSJPEGFileType properties:imageProps];
                 NSString *imageName = [NSString stringWithFormat:@"%@.jpg", [[image instanceNumber] stringValue]];
                 OZZipWriteStream *stream= [zipFile writeFileInZipWithName:imageName
                                                          compressionLevel:OZZipCompressionLevelBest];
                 [stream writeData:imageData];
-                [stream finishedWriting];
+                [stream finishedWriting];       
             }
             [zipFile close];
             
@@ -570,13 +589,12 @@
     else
     {
         [self.progressController close];
-        NSAlert *myAlert = [NSAlert alertWithMessageText:@"Finished upload!"
-                                           defaultButton:@"Ok"
-                                         alternateButton:nil
-                                             otherButton:nil
-                               informativeTextWithFormat:@""];
-        [myAlert runModal];
-
+        self.finishedWindowController = [[FinishedWindowController alloc] initWithWindowNibName:@"FinishedWindow"];
+        self.finishedWindowController.parent = self;
+        
+        [self.originalWindow beginSheet:self.finishedWindowController.window completionHandler:^(NSModalResponse returnCode) {
+           
+        }];
     }
     /*
      <NSHTTPURLResponse: 0x7f88b9923040> { URL: http://sandbox.radiopaedia.org/api/v1/cases/110/studies/43979/images } { status code: 201, headers {

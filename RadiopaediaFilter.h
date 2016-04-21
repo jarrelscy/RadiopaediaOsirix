@@ -6,9 +6,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <OsiriXAPI/PluginFilter.h>
+#import "OsiriXAPI/PluginFilter.h"
 #import "EnterDetailsWindowController.h"
 #import "ProgressWindowController.h"
+#import "FinishedWindowController.h"
 @interface RadiopaediaFilter : PluginFilter {
     
 }
@@ -17,8 +18,12 @@
 @property (nonatomic, strong) NSMutableArray *zipFiles;
 @property (nonatomic, strong) NSMutableArray *seriesNames;
 @property (nonatomic, strong) NSString *title;
+
+@property (nonatomic, strong) NSString *returnedCaseTitle;
+@property (nonatomic, strong) NSString *caseId;
 @property (nonatomic, strong) NSString *system;
 @property (nonatomic, strong) NSMutableArray *queuedRequests;
+@property (nonatomic, strong) FinishedWindowController* finishedWindowController;
 @property (nonatomic, strong) EnterDetailsWindowController *detailsController;
 @property (nonatomic, strong) ProgressWindowController *progressController;
 @property (nonatomic, strong) NSWindow *originalWindow;
