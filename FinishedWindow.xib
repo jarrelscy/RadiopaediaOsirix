@@ -55,7 +55,7 @@ DQ
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e2s-g1-ad2">
                         <rect key="frame" x="208" y="167" width="86" height="17"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="PuE-5W-ee5">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" title="Label" id="PuE-5W-ee5">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -84,7 +84,7 @@ DQ
                             <rect key="frame" x="-100" y="-100" width="87" height="18"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
-                        <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="E5G-NI-ple">
+                        <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="E5G-NI-ple">
                             <rect key="frame" x="300" y="1" width="15" height="42"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>

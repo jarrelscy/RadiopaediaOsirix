@@ -21,6 +21,9 @@
 - (IBAction)OkButtonClicked:(id)sender {
     [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
 }
+- (IBAction)CancelButtonClicked:(id)sender {
+    [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseCancel];
+}
 - (void)windowDidLoad
 {
  
@@ -55,6 +58,7 @@
     {
         [self.systemSelect addItemWithTitle:title];
     }
+    [self.window makeFirstResponder:self.caseTitleField];
     [self.ageField setStringValue:((RadiopaediaFilter *)self.parent).patientAge];
     [self.genderSelect selectItemWithTitle:((RadiopaediaFilter *)self.parent).patientSex];
 }

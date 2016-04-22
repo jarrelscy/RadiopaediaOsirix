@@ -388,6 +388,7 @@
 {
     self.patientAge = @"";
     self.patientSex = @"Unknown";
+    self.patientAgeInt = 999999;
    /* NSString* message = [[NSUserDefaults standardUserDefaults] stringForKey:@"HelloWorld_Message"];
     if (!message) message = @"Define this message in the Hello World plugin's preferences";
     
@@ -479,7 +480,12 @@
             int tempAge = (int)(t / 3600.0 / 24 / 365);
             if (tempAge > 0)
             {
-                self.patientAge = [NSString stringWithFormat:@"%d", (int)(t / 3600.0 / 24 / 365)];
+                
+                if(tempAge < self.patientAgeInt)
+                {
+                    self.patientAge = [NSString stringWithFormat:@"%d", tempAge];
+                    self.patientAgeInt = tempAge;
+                }
             }
             if ([study.patientSex isEqualToString:@"M"])
             {

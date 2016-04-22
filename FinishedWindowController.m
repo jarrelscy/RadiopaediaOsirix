@@ -18,8 +18,10 @@
 - (void)windowDidLoad
 {
     [self.ridLabel setStringValue:((RadiopaediaFilter *)(self.parent)).caseId];
-    [self.hyperlinkLabel setAutomaticLinkDetectionEnabled:TRUE];
     NSString *s = [NSString stringWithFormat:@"http://sandbox.radiopaedia.org/cases/%@", ((RadiopaediaFilter *)(self.parent)).caseId];
+    
+    [self.hyperlinkLabel setAutomaticLinkDetectionEnabled:TRUE];
+    
     [self.hyperlinkLabel setString:s];
     [self.hyperlinkLabel checkTextInDocument:nil];
         
