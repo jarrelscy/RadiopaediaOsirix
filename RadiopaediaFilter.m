@@ -46,6 +46,7 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 - (void) initPlugin
 {
+    
     Class AppControllerClass = objc_getClass("AppController");
     if (AppControllerClass == nil)
     {
@@ -197,10 +198,9 @@
         }
         if ([self.detailsController.discussionField stringValue] != nil && [[self.detailsController.discussionField stringValue] length] > 0)
         {
-            [paramsDict setObject:[self.detailsController.discussionField stringValue] forKey:@"discussion"];
+            [paramsDict setObject:[self.detailsController.discussionField stringValue] forKey:@"body"];
         }
-        
-        
+
         
         
         
@@ -293,6 +293,10 @@
     {
         return @"Fluoroscopy";
     }
+    else if ([modality isEqualToString:@"CT"])
+    {
+        return @"CT";
+    }
     else
     {
         return @""; // return nothing
@@ -382,6 +386,8 @@
 
 - (long) filterImage:(NSString*) menuName
 {
+    self.patientAge = @"";
+    self.patientSex = @"Unknown";
    /* NSString* message = [[NSUserDefaults standardUserDefaults] stringForKey:@"HelloWorld_Message"];
     if (!message) message = @"Define this message in the Hello World plugin's preferences";
     
@@ -434,6 +440,7 @@
         {
             DicomSeries *series = (DicomSeries *)item;
             NSMutableArray *tempArray;
+            
             if (![self.selectedStudies containsObject:[series study]])
               {
                   // insert new study and create temp array
@@ -462,10 +469,26 @@
     
     for (NSMutableArray *seriesArray in self.selectedSeries)
     {
+    
         NSMutableArray *tempArray = [NSMutableArray array];
         [self.zipFiles addObject:tempArray];
         for (DicomSeries *series in seriesArray)
         {
+            DicomStudy *study = [series study];
+            NSTimeInterval t = [study.date timeIntervalSinceDate:study.dateOfBirth];
+            int tempAge = (int)(t / 3600.0 / 24 / 365);
+            if (tempAge > 0)
+            {
+                self.patientAge = [NSString stringWithFormat:@"%d", (int)(t / 3600.0 / 24 / 365)];
+            }
+            if ([study.patientSex isEqualToString:@"M"])
+            {
+                self.patientSex = @"Male";
+            }
+            else if ([study.patientSex isEqualToString:@"F"])
+            {
+                self.patientSex = @"Female";
+            }
             NSString *uuidString = [[NSUUID UUID] UUIDString];
             NSString *filename =
             [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-radiopaedia.zip", uuidString]];
@@ -509,7 +532,7 @@
     // Here we try to retrieve the cases
     self.detailsController = [[EnterDetailsWindowController alloc] initWithWindowNibName:@"EnterDetailsWindow"];
     //[self.detailsController showWindow:nil];
-    
+    self.detailsController.parent = self;
     // REMEMBER MEMORY ON XIB FILE SHOULD BE BUFFERED
     self.originalWindow = [NSApp keyWindow];
     [self.originalWindow beginSheet:self.detailsController.window completionHandler:^(NSModalResponse returnCode) {

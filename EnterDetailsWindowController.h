@@ -23,6 +23,7 @@
 
 - (void)windowDidLoad;
 -(void) awakeFromNib;
+@property (strong) id parent;
 @property (strong) IBOutlet NSTextField *caserIDField;
 @property (strong) IBOutlet NSTextField *caseTitleField;
 @property (strong) IBOutlet NSPopUpButton *systemSelect;

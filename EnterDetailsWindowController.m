@@ -9,6 +9,7 @@
 
 
 #import "EnterDetailsWindowController.h"
+#import "RadiopaediaFilter.h"
 @implementation EnterDetailsWindowController
 
 -(void) awakeFromNib
@@ -54,6 +55,8 @@
     {
         [self.systemSelect addItemWithTitle:title];
     }
+    [self.ageField setStringValue:((RadiopaediaFilter *)self.parent).patientAge];
+    [self.genderSelect selectItemWithTitle:((RadiopaediaFilter *)self.parent).patientSex];
 }
 - (void)setupSheetTerminationHandling {
     NSWindow *sheet = [self window];
