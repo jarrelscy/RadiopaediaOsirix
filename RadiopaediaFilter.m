@@ -205,7 +205,7 @@
         
         
         NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
-        NSMutableURLRequest *request  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:@"http://sandbox.radiopaedia.org/api/v1/cases"]
+        NSMutableURLRequest *request  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:@"http://radiopaedia.org/api/v1/cases"]
                                       paramString:paramStr];
         request.HTTPMethod = @"POST";
         
@@ -236,9 +236,16 @@
                  }
                  self.seriesNames = [NSMutableArray array];
                  self.queuedRequests = [NSMutableArray array];
+                 NSArray *sortedArray;
+                 sortedArray = [self.selectedSeries sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+                     NSDate *first = [(DicomSeries *)[(NSMutableArray *)a firstObject] date];
+                     NSDate *second = [(DicomSeries *)[(NSMutableArray *)b firstObject] date];
+                     return [first compare:second];
+                 }];
+                 
                  NSUInteger i = 0;
-                 for (NSMutableArray *seriesArray in self.selectedSeries) {
-                     [self processSeriesArray:seriesArray with:self.caseId using:auth withDicom:[self.selectedStudies objectAtIndex:i]];
+                 for (NSMutableArray *seriesArray in sortedArray) {
+                     [self processSeriesArray:seriesArray with:self.caseId using:auth withDicom:(DicomStudy *)[seriesArray firstObject]];
                      i++;
                  }
                  
@@ -312,7 +319,7 @@
         [paramsDict setObject:modality forKey:@"modality"];
     
     NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
-    NSString *urlString = [NSString stringWithFormat:@"http://sandbox.radiopaedia.org/api/v1/cases/%@/studies", caseId];
+    NSString *urlString = [NSString stringWithFormat:@"http://radiopaedia.org/api/v1/cases/%@/studies", caseId];
     NSMutableURLRequest *request  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:urlString]
                                                                   paramString:paramStr];
     request.HTTPMethod = @"POST";
@@ -340,7 +347,7 @@
                  NSMutableDictionary *paramsDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                                       nil];
                  NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
-                 NSString *urlString = [NSString stringWithFormat:@"http://sandbox.radiopaedia.org/api/v1/cases/%@/studies/%@/images", caseId, studyId];
+                 NSString *urlString = [NSString stringWithFormat:@"http://radiopaedia.org/api/v1/cases/%@/studies/%@/images", caseId, studyId];
                  NSMutableURLRequest *request2  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:urlString]
                                                                               paramString:paramStr];
                  request2.HTTPMethod = @"POST";
@@ -544,7 +551,7 @@
     [self.originalWindow beginSheet:self.detailsController.window completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseOK)
         {
-            NSURL *tokenURL = [NSURL URLWithString:@"http://sandbox.radiopaedia.org/oauth/token"];
+            NSURL *tokenURL = [NSURL URLWithString:@"http://radiopaedia.org/oauth/token"];
             
             // We'll make up an arbitrary redirectURI.  The controller will watch for
             // the server to redirect the web view to this URI, but this URI will not be
@@ -555,22 +562,40 @@
             auth = [GTMOAuth2Authentication authenticationWithServiceProvider:@"Radiopaedia"
                                                                      tokenURL:tokenURL
                                                                   redirectURI:redirectURI
-                                                                     clientID:@"9c2d8456fb2798a7bf0406fa4c6a516f57d74b1b0abd13889e4bf831ba5a2735"
-                                                                 clientSecret:@"4ace663418bbe8e4557d0df18452eca90cd768204f1a950984fcae359dc555b0"];
+                                                                     clientID:@"6651e3f90d4ed6c503880819ca7d65abaf11f88cdce1c8da95db057b263f1bdb" // @"9c2d8456fb2798a7bf0406fa4c6a516f57d74b1b0abd13889e4bf831ba5a2735"
+                                                                 clientSecret:@"a37b89abd9f555fea5220abed158fc983f893a6460a399fa92b04ea89e3ffe54" //@"4ace663418bbe8e4557d0df18452eca90cd768204f1a950984fcae359dc555b0"
+                    ];
             auth.scope = @"cases";
-            NSURL *authURL = [NSURL URLWithString:@"http://sandbox.radiopaedia.org/oauth/authorize"];
+            NSURL *authURL = [NSURL URLWithString:@"http://radiopaedia.org/oauth/authorize"];
             
+            BOOL isSignedIn = false;
+            if (auth) {
+                BOOL didAuth = [GTMOAuth2WindowController authorizeFromKeychainForName:@"Radiopaedia Osirix"
+                                                                          authentication:auth];
+                // if the auth object contains an access token, didAuth is now true
+                if (didAuth)
+                {
+                    isSignedIn = [auth canAuthorize];
+                }
+            }
             
-            self.windowController = [GTMOAuth2WindowController controllerWithAuthentication:auth
-                                                                      authorizationURL:authURL
-                                                                      keychainItemName:@"Radiopaedia Osirix"
-                                                                        resourceBundle:nil];
-            
-            NSString *html = @"<html><body><div align=center>Loading sign-in page...</div></body></html>";
-            [self.windowController setInitialHTMLString:html];
-            [self.windowController signInSheetModalForWindow:self.originalWindow
-                                               delegate:self
-                                       finishedSelector:@selector(viewController:finishedWithAuth:error:)];
+            if (!isSignedIn)
+            {
+                self.windowController = [GTMOAuth2WindowController controllerWithAuthentication:auth
+                                                                          authorizationURL:authURL
+                                                                          keychainItemName:@"Radiopaedia Osirix"
+                                                                            resourceBundle:nil];
+                
+                NSString *html = @"<html><body><div align=center>Loading sign-in page...</div></body></html>";
+                [self.windowController setInitialHTMLString:html];
+                [self.windowController signInSheetModalForWindow:self.originalWindow
+                                                   delegate:self
+                                           finishedSelector:@selector(viewController:finishedWithAuth:error:)];
+            }
+            else
+            {
+                [self viewController:nil finishedWithAuth:auth error:nil];
+            }
         }
     }];
    
