@@ -255,12 +255,12 @@
              
              else{
                  // Failed to authorize for some reason
-                 NSAlert *myAlert = [NSAlert alertWithMessageText:@"Hello World!"
-                                                    defaultButton:@"Hello"
+                 NSAlert *myAlert = [NSAlert alertWithMessageText:@"Failed to upload"
+                                                    defaultButton:@"OK"
                                                   alternateButton:nil
                                                       otherButton:nil
-                                        informativeTextWithFormat:@"Failed %ld", (long)[error code]];
-                 
+                                        informativeTextWithFormat:@"Your login has expired! Please relogin. Error %d", (int)[error code]];
+                 [GTMOAuth2WindowController removeAuthFromKeychainForName:@"Radiopaedia Osirix"];
                  [myAlert performSelectorOnMainThread:@selector(runModal) withObject:nil waitUntilDone:NO];
              }
 

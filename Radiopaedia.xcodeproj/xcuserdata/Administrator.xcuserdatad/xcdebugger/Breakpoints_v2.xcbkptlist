@@ -143,7 +143,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "604"
             endingLineNumber = "604"
-            landmarkName = "-continueProcessingQueue"
+            landmarkName = "-filterImage:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -159,7 +159,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "594"
             endingLineNumber = "594"
-            landmarkName = "-startProcessingQueue"
+            landmarkName = "-filterImage:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -185,7 +185,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "606"
             endingLineNumber = "606"
-            landmarkName = "-continueProcessingQueue"
+            landmarkName = "-startProgressBarFor:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -281,7 +281,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "620"
             endingLineNumber = "620"
-            landmarkName = "-connection:didReceiveResponse:"
+            landmarkName = "-continueProcessingQueue"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
