@@ -20,7 +20,9 @@
 {
 
 }
-
+@property (strong) NSArray *titles;
+@property (strong) NSArray *indexOfSelected;
+-(long) getSelectedIndex;
 - (void)windowDidLoad;
 -(void) awakeFromNib;
 @property (strong) id parent;

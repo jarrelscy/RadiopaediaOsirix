@@ -30,37 +30,65 @@
     [myAlert setMessageText:@"You have been logged out"];
     [myAlert performSelectorOnMainThread:@selector(runModal) withObject:nil waitUntilDone:NO];
 }
+-(long) getSelectedIndex
+{
+   
+    int s = (int )[self.systemSelect indexOfSelectedItem];
+    long ret = (long)[(NSNumber *)[self.indexOfSelected objectAtIndex:s] intValue];
+    return ret;
+}
 - (void)windowDidLoad
 {
- 
+    self.indexOfSelected = @[@1,@2,@3,@4,@6,@7,@8,@9,@11,@12,@14,@15,@16,@17,@18,@19,@21,@22,@23];
+    self.titles =  @[@"",
+                                      @"Breast",
+                                      @"Vascular",
+                                      @"Central Nervous System",
+                                      @"Chest",
+                                      @"",
+                                      @"Gastrointestinal",
+                                      @"Head and Neck",
+                                      @"Hepatobiliary",
+                                      @"Musculoskeletal",
+                                      @"",
+                                      @"Urogenital",
+                                      @"Paediatrics",
+                                      @"",
+                                      @"Spine",
+                                      @"Cardiac",
+                                      @"Interventional",
+                                      @"Obstetrics",
+                                      @"Gynaecology",
+                                      @"Haematology",
+                                      @"",
+                                      @"Forensic",
+                                      @"Oncology",
+                                      @"Trauma"];
     
+    self.titles =  @[@"Breast",
+                     @"Vascular",
+                     @"Central Nervous System",
+                     @"Chest",
+                     @"Gastrointestinal",
+                     @"Head and Neck",
+                     @"Hepatobiliary",
+                     @"Musculoskeletal",
+                     @"Urogenital",
+                     @"Paediatrics",
+                     @"Spine",
+                     @"Cardiac",
+                     @"Interventional",
+                     @"Obstetrics",
+                     @"Gynaecology",
+                     @"Haematology",
+                     @"Forensic",
+                     @"Oncology",
+                     @"Trauma"];
+
     
     [super windowDidLoad];
-    NSArray *titles = @[@"Empty1",
-                        @"Breast",
-                        @"Vascular",
-                        @"Central Nervous System",
-                        @"Chest",
-                        @"Empty2",
-                        @"Gastrointestinal",
-                        @"Head and Neck",
-                        @"Hepatobiliary",
-                        @"Musculoskeletal",
-                        @"Empty3",
-                        @"Urogenital",
-                        @"Paediatrics",
-                        @"Empty4",
-                        @"Spine",
-                        @"Cardiac",
-                        @"Interventional",
-                        @"Obstetrics",
-                        @"Gynaecology",
-                        @"Haematology",
-                        @"Empty5",
-                        @"Forensic",
-                        @"Oncology",
-                        @"Trauma"];
-    for (NSString *title in titles)
+    
+    for (NSString *title in self.titles)
     {
         [self.systemSelect addItemWithTitle:title];
     }

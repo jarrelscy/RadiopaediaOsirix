@@ -317,6 +317,7 @@ finishedWithFetcher:(GTMOAuth2Fetcher *)fetcher
   // we want notification if we lose connectivity to the web server
   [self startReachabilityCheck];
   return YES;
+    
 }
 
 // utility for making a request from an old URL with some additional parameters

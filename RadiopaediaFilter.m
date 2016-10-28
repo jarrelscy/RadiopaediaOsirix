@@ -175,9 +175,10 @@
     } else {
         
         
-        
+        long selectedVal = (long)[[self detailsController] getSelectedIndex];
+        NSString *s = [NSString stringWithFormat:@"%ld", selectedVal];
         NSMutableDictionary *paramsDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                           [NSString stringWithFormat:@"%ld", (long)[self.detailsController.systemSelect indexOfSelectedItem]], @"system_id",
+                                           s, @"system_id",
                                            nil];
        
         if ([self.detailsController.caseTitleField stringValue] != nil && [[self.detailsController.caseTitleField stringValue] length] > 0)
@@ -205,7 +206,7 @@
         
         
         NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
-        NSMutableURLRequest *request  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:@"http://radiopaedia.org/api/v1/cases"]
+        NSMutableURLRequest *request  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:@"https://radiopaedia.org/api/v1/cases"]
                                       paramString:paramStr];
         request.HTTPMethod = @"POST";
         
@@ -319,7 +320,7 @@
         [paramsDict setObject:modality forKey:@"modality"];
     
     NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
-    NSString *urlString = [NSString stringWithFormat:@"http://radiopaedia.org/api/v1/cases/%@/studies", caseId];
+    NSString *urlString = [NSString stringWithFormat:@"https://radiopaedia.org/api/v1/cases/%@/studies", caseId];
     NSMutableURLRequest *request  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:urlString]
                                                                   paramString:paramStr];
     request.HTTPMethod = @"POST";
@@ -347,7 +348,7 @@
                  NSMutableDictionary *paramsDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                                       nil];
                  NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
-                 NSString *urlString = [NSString stringWithFormat:@"http://radiopaedia.org/api/v1/cases/%@/studies/%@/images", caseId, studyId];
+                 NSString *urlString = [NSString stringWithFormat:@"https://radiopaedia.org/api/v1/cases/%@/studies/%@/images", caseId, studyId];
                  NSMutableURLRequest *request2  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:urlString]
                                                                               paramString:paramStr];
                  request2.HTTPMethod = @"POST";
@@ -551,7 +552,7 @@
     [self.originalWindow beginSheet:self.detailsController.window completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseOK)
         {
-            NSURL *tokenURL = [NSURL URLWithString:@"http://radiopaedia.org/oauth/token"];
+            NSURL *tokenURL = [NSURL URLWithString:@"https://radiopaedia.org/oauth/token"];
             
             // We'll make up an arbitrary redirectURI.  The controller will watch for
             // the server to redirect the web view to this URI, but this URI will not be
@@ -562,11 +563,11 @@
             auth = [GTMOAuth2Authentication authenticationWithServiceProvider:@"Radiopaedia"
                                                                      tokenURL:tokenURL
                                                                   redirectURI:redirectURI
-                                                                     clientID:@"6651e3f90d4ed6c503880819ca7d65abaf11f88cdce1c8da95db057b263f1bdb" // @"9c2d8456fb2798a7bf0406fa4c6a516f57d74b1b0abd13889e4bf831ba5a2735"
-                                                                 clientSecret:@"a37b89abd9f555fea5220abed158fc983f893a6460a399fa92b04ea89e3ffe54" //@"4ace663418bbe8e4557d0df18452eca90cd768204f1a950984fcae359dc555b0"
+                                                                     clientID:@"28181d4caa0e95e05c01b6b6afc2f709e3125bd1d1e6a76cbdc92c34353b52a1" // @"9c2d8456fb2798a7bf0406fa4c6a516f57d74b1b0abd13889e4bf831ba5a2735"
+                                                                 clientSecret:@"d345535b6aada1038826ba27f1d77170eae63e9698ed63b5ca03296a70093135" //@"4ace663418bbe8e4557d0df18452eca90cd768204f1a950984fcae359dc555b0"
                     ];
             auth.scope = @"cases";
-            NSURL *authURL = [NSURL URLWithString:@"http://radiopaedia.org/oauth/authorize"];
+            NSURL *authURL = [NSURL URLWithString:@"https://radiopaedia.org/oauth/authorize"];
             
             BOOL isSignedIn = false;
             if (auth) {
@@ -588,7 +589,7 @@
                 
                 NSString *html = @"<html><body><div align=center>Loading sign-in page...</div></body></html>";
                 [self.windowController setInitialHTMLString:html];
-                [self.windowController signInSheetModalForWindow:self.originalWindow
+                [self.windowController  signInSheetModalForWindow:self.originalWindow
                                                    delegate:self
                                            finishedSelector:@selector(viewController:finishedWithAuth:error:)];
             }
@@ -651,7 +652,7 @@
         }];
     }
     /*
-     <NSHTTPURLResponse: 0x7f88b9923040> { URL: http://sandbox.radiopaedia.org/api/v1/cases/110/studies/43979/images } { status code: 201, headers {
+     <NSHTTPURLResponse: 0x7f88b9923040> { URL: http://radiopaedia.org/api/v1/cases/110/studies/43979/images } { status code: 201, headers {
      Age = 0;
      "Cache-Control" = "max-age=0, private, must-revalidate";
      Connection = "keep-alive";
@@ -659,7 +660,7 @@
      "Content-Type" = "application/json";
      Date = "Thu, 07 Apr 2016 21:17:18 GMT";
      Etag = "\"3043e56510ae52e1d05e6830ca72bc39\"";
-     Location = "http://sandbox.radiopaedia.org/cases/110/images/23422";
+     Location = "http://radiopaedia.org/cases/110/images/23422";
      Status = "201 Created";
      "X-Powered-By" = TrikeApps;
      "X-UA-Compatible" = "IE=Edge,chrome=1";

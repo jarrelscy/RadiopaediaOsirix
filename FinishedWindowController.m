@@ -17,13 +17,16 @@
 }
 - (void)windowDidLoad
 {
-    [self.ridLabel setStringValue:((RadiopaediaFilter *)(self.parent)).caseId];
-    NSString *s = [NSString stringWithFormat:@"http://radiopaedia.org/cases/%@", ((RadiopaediaFilter *)(self.parent)).caseId];
+    if (((RadiopaediaFilter *)(self.parent)).caseId != nil)
+   {
+    
+     [self.ridLabel setStringValue:((RadiopaediaFilter *)(self.parent)).caseId];
+    NSString *s = [NSString stringWithFormat:@"https://radiopaedia.org/cases/%@", ((RadiopaediaFilter *)(self.parent)).caseId];
     
     [self.hyperlinkLabel setAutomaticLinkDetectionEnabled:TRUE];
     
     [self.hyperlinkLabel setString:s];
     [self.hyperlinkLabel checkTextInDocument:nil];
-        
+   }
 }
 @end
