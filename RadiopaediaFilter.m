@@ -234,6 +234,27 @@
                  }
                  self.seriesNames = [NSMutableArray array];
                  self.queuedRequests = [NSMutableArray array];
+                 // add final request (mark upload finished)
+                 
+                 NSMutableDictionary *paramsDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                                    nil];
+                 NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
+                 NSString *urlString = [NSString stringWithFormat:@"https://radiopaedia.org/api/v1/cases/%@/mark_upload_finished", self.caseId];
+                 NSMutableURLRequest *request2  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:urlString]
+                                                                                paramString:paramStr];
+                 request2.HTTPMethod = @"PUT";
+                 [auth authorizeRequest:request2 completionHandler:^(NSError *err)
+                  {
+                      if (err == nil) {
+                          [self.queuedRequests addObject:request2];
+                      }
+                      else{
+                      }
+                      
+                  }];
+                 [self.seriesNames addObject:@"Finalizing case..."];
+                 
+                 
                  NSArray *sortedArray;
                  sortedArray = [self.selectedSeries sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
                      NSDate *first = [(DicomSeries *)[(NSMutableArray *)a firstObject] date];
@@ -246,9 +267,6 @@
                      [self processSeriesArray:seriesArray with:self.caseId using:auth withDicom:(DicomStudy *)[seriesArray firstObject]];
                      i++;
                  }
-                 
-                 // add final request (mark upload finished)
-                 
                  
                  
                  
