@@ -25,7 +25,7 @@
     [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseCancel];
 }
 - (IBAction)LogoutButtonClicked:(id)sender {
-    [GTMOAuth2WindowController removeAuthFromKeychainForName:@"Radiopaedia Osirix"];
+    [GTMOAuth2WindowController removeAuthFromKeychainForName:KEYCHAIN_ITEM];
     NSAlert *myAlert = [[NSAlert alloc] init];
     [myAlert setMessageText:@"You have been logged out"];
     [myAlert performSelectorOnMainThread:@selector(runModal) withObject:nil waitUntilDone:NO];

@@ -201,15 +201,12 @@
         {
             [paramsDict setObject:[self.detailsController.discussionField stringValue] forKey:@"body"];
         }
-
-        
         
         
         NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
         NSMutableURLRequest *request  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:@"https://radiopaedia.org/api/v1/cases"]
                                       paramString:paramStr];
         request.HTTPMethod = @"POST";
-        
         
         [auth authorizeRequest:request completionHandler:^(NSError *err)
          {
@@ -250,6 +247,11 @@
                      i++;
                  }
                  
+                 // add final request (mark upload finished)
+                 
+                 
+                 
+                 
                  // start processing queue of requests
                  [self startProcessingQueue];
              }
@@ -260,8 +262,8 @@
                                                     defaultButton:@"OK"
                                                   alternateButton:nil
                                                       otherButton:nil
-                                        informativeTextWithFormat:@"Your login has expired! Please relogin. Error %d", (int)[error code]];
-                 [GTMOAuth2WindowController removeAuthFromKeychainForName:@"Radiopaedia Osirix"];
+                                        informativeTextWithFormat:@"Your login has expired! Please relogin. Error %d %@", (int)[err code], err];
+                 [GTMOAuth2WindowController removeAuthFromKeychainForName:KEYCHAIN_ITEM];
                  [myAlert performSelectorOnMainThread:@selector(runModal) withObject:nil waitUntilDone:NO];
              }
 
@@ -571,12 +573,13 @@
             
             BOOL isSignedIn = false;
             if (auth) {
-                BOOL didAuth = [GTMOAuth2WindowController authorizeFromKeychainForName:@"Radiopaedia Osirix"
+                BOOL didAuth = [GTMOAuth2WindowController authorizeFromKeychainForName:KEYCHAIN_ITEM
                                                                           authentication:auth];
                 // if the auth object contains an access token, didAuth is now true
                 if (didAuth)
                 {
                     isSignedIn = [auth canAuthorize];
+                    
                 }
             }
             
@@ -584,7 +587,7 @@
             {
                 self.windowController = [GTMOAuth2WindowController controllerWithAuthentication:auth
                                                                           authorizationURL:authURL
-                                                                          keychainItemName:@"Radiopaedia Osirix"
+                                                                          keychainItemName:KEYCHAIN_ITEM
                                                                             resourceBundle:nil];
                 
                 NSString *html = @"<html><body><div align=center>Loading sign-in page...</div></body></html>";
@@ -643,6 +646,7 @@
     }
     else
     {
+        
         [self.progressController close];
         self.finishedWindowController = [[FinishedWindowController alloc] initWithWindowNibName:@"FinishedWindow"];
         self.finishedWindowController.parent = self;
