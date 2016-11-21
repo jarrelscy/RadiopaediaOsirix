@@ -169,7 +169,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "605"
             endingLineNumber = "605"
-            landmarkName = "-startProgressBarFor:"
+            landmarkName = "-filterImage:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -265,7 +265,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "619"
             endingLineNumber = "619"
-            landmarkName = "-continueProcessingQueue"
+            landmarkName = "-filterImage:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
