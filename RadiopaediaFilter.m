@@ -669,7 +669,10 @@
         [self.progressController close];
         self.finishedWindowController = [[FinishedWindowController alloc] initWithWindowNibName:@"FinishedWindow"];
         self.finishedWindowController.parent = self;
-        
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+        self.finishedWindowController.statusCode = @"Your case has uploaded successfully!";
+        if ([httpResponse statusCode] != 200)
+            self.finishedWindowController.statusCode = [NSString stringWithFormat:@"Error in uploading - status code: %ld", [httpResponse statusCode]];
         [self.originalWindow beginSheet:self.finishedWindowController.window completionHandler:^(NSModalResponse returnCode) {
            
         }];

@@ -14,6 +14,8 @@
 }
 - (void)windowDidLoad;
 @property (strong) id parent;
+@property (strong) NSString *statusCode;
+@property (strong) IBOutlet NSTextField *statusLabel;
 @property (strong) IBOutlet NSTextField *ridLabel;
 @property (strong) IBOutlet NSTextView *hyperlinkLabel;
 @end

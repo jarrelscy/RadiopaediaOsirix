@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11542" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="FinishedWindowController">
@@ -10,6 +11,7 @@
                 <outlet property="hyperlinkLabel" destination="Xps-8L-rk9" id="bXd-Tl-OT9"/>
                 <outlet property="ridLabel" destination="e2s-g1-ad2" id="fxn-ho-uNN"/>
                 <outlet property="seriesLabel" destination="e2s-g1-ad2" id="eAK-J1-ppX"/>
+                <outlet property="statusLabel" destination="oQ9-cy-t7q" id="dMK-FX-hLl"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="hfp-52-0fJ"/>
             </connections>
         </customObject>
@@ -25,7 +27,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oQ9-cy-t7q">
-                        <rect key="frame" x="85" y="192" width="216" height="26"/>
+                        <rect key="frame" x="85" y="192" width="351" height="26"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Your case has finished uploading! " id="geP-F1-ePC">
                             <font key="font" metaFont="system"/>

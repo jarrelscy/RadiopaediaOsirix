@@ -19,7 +19,8 @@
 {
     if (((RadiopaediaFilter *)(self.parent)).caseId != nil)
    {
-    
+       
+       [self.statusLabel setStringValue:self.statusCode];
      [self.ridLabel setStringValue:((RadiopaediaFilter *)(self.parent)).caseId];
     NSString *s = [NSString stringWithFormat:@"https://radiopaedia.org/cases/%@", ((RadiopaediaFilter *)(self.parent)).caseId];
     
