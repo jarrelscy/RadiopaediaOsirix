@@ -96,6 +96,9 @@
     [self.ageField setStringValue:((RadiopaediaFilter *)self.parent).patientAge];
     [self.genderSelect selectItemWithTitle:((RadiopaediaFilter *)self.parent).patientSex];
 }
+- (IBAction)sliderValueChanged:(id)sender {
+    [self.compressionValueField setStringValue:[NSString stringWithFormat:@"%f", [self.compressionSlider floatValue]]];
+}
 - (void)setupSheetTerminationHandling {
     NSWindow *sheet = [self window];
     

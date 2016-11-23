@@ -20,6 +20,7 @@
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *patientAge;
 @property (nonatomic) int patientAgeInt;
+@property (nonatomic) float compressionValue;
 @property (nonatomic, strong) NSString *patientSex;
 @property (nonatomic, strong) NSString *returnedCaseTitle;
 @property (nonatomic, strong) NSString *caseId;

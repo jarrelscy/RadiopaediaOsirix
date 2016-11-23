@@ -412,32 +412,9 @@
 
     
 }
-
-- (long) filterImage:(NSString*) menuName
+-(void) processImages:(float) compressionFactorVal
 {
-    self.patientAge = @"";
-    self.patientSex = @"Unknown";
-    self.patientAgeInt = 999999;
-   /* NSString* message = [[NSUserDefaults standardUserDefaults] stringForKey:@"HelloWorld_Message"];
-    if (!message) message = @"Define this message in the Hello World plugin's preferences";
     
-    NSAlert *myAlert = [NSAlert alertWithMessageText:@"Hello World!"
-                                       defaultButton:@"Hello"
-                                     alternateButton:nil
-                                         otherButton:nil
-                           informativeTextWithFormat:@"%@", message];
-    
-    [myAlert runModal];*/
-    
-    /*
-     
-     Many thanks to wonderful blog at http://myfirstosirixplugin.blogspot.com.au/   !!!!
-     
-     */
-    
-    
-
-  
     BrowserController *currentBrowser = [BrowserController currentBrowser];
     NSArray *selectedItems = [currentBrowser databaseSelection];
     
@@ -472,12 +449,12 @@
             NSMutableArray *tempArray;
             
             if (![self.selectedStudies containsObject:[series study]])
-              {
-                  // insert new study and create temp array
-                  [self.selectedStudies addObject:[series study]];
-                  tempArray = [NSMutableArray array];
-                  [self.selectedSeries addObject:tempArray];
-              }
+            {
+                // insert new study and create temp array
+                [self.selectedStudies addObject:[series study]];
+                tempArray = [NSMutableArray array];
+                [self.selectedSeries addObject:tempArray];
+            }
             else
             {
                 // get previous temp array
@@ -491,7 +468,7 @@
     
     
     // Process dicom series
-    NSNumber *compressionFactor = [NSNumber numberWithFloat:0.5];
+    NSNumber *compressionFactor = [NSNumber numberWithFloat:compressionFactorVal];
     NSDictionary *imageProps = [NSDictionary dictionaryWithObject:compressionFactor
                                                            forKey:NSImageCompressionFactor];
     
@@ -499,7 +476,7 @@
     
     for (NSMutableArray *seriesArray in self.selectedSeries)
     {
-    
+        
         NSMutableArray *tempArray = [NSMutableArray array];
         [self.zipFiles addObject:tempArray];
         for (DicomSeries *series in seriesArray)
@@ -554,13 +531,39 @@
                 OZZipWriteStream *stream= [zipFile writeFileInZipWithName:imageName
                                                          compressionLevel:OZZipCompressionLevelBest];
                 [stream writeData:imageData];
-                [stream finishedWriting];       
+                [stream finishedWriting];
             }
             [zipFile close];
             
             [tempArray addObject:filename];
         }
     }
+    
+
+}
+- (long) filterImage:(NSString*) menuName
+{
+    self.patientAge = @"";
+    self.patientSex = @"Unknown";
+    self.patientAgeInt = 999999;
+   /* NSString* message = [[NSUserDefaults standardUserDefaults] stringForKey:@"HelloWorld_Message"];
+    if (!message) message = @"Define this message in the Hello World plugin's preferences";
+    
+    NSAlert *myAlert = [NSAlert alertWithMessageText:@"Hello World!"
+                                       defaultButton:@"Hello"
+                                     alternateButton:nil
+                                         otherButton:nil
+                           informativeTextWithFormat:@"%@", message];
+    
+    [myAlert runModal];*/
+    
+    /*
+     
+     Many thanks to wonderful blog at http://myfirstosirixplugin.blogspot.com.au/   !!!!
+     
+     */
+    
+    
     
     
     
@@ -573,6 +576,8 @@
     [self.originalWindow beginSheet:self.detailsController.window completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseOK)
         {
+            [self processImages:[self.detailsController.compressionSlider floatValue]];
+            
             NSURL *tokenURL = [NSURL URLWithString:@"https://radiopaedia.org/oauth/token"];
             
             // We'll make up an arbitrary redirectURI.  The controller will watch for
