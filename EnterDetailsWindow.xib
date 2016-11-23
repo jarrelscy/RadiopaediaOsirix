@@ -169,15 +169,6 @@ DQ
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kV9-wj-HhL">
-                        <rect key="frame" x="18" y="92" width="88" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Compression:" id="HWr-86-0Nx">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dmr-t4-bhh">
                         <rect key="frame" x="18" y="460" width="220" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -221,23 +212,6 @@ Gw
                             <action selector="LogoutButtonClicked:" target="-2" id="QfF-HD-QdF"/>
                         </connections>
                     </button>
-                    <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f9z-sg-9lb">
-                        <rect key="frame" x="134" y="90" width="199" height="19"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <sliderCell key="cell" state="on" alignment="left" maxValue="1" doubleValue="0.5" tickMarkPosition="above" sliderType="linear" id="VZa-7T-lJD"/>
-                        <connections>
-                            <action selector="sliderValueChanged:" target="-2" id="Rty-7A-mXT"/>
-                        </connections>
-                    </slider>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B1d-b1-Pe3">
-                        <rect key="frame" x="344" y="92" width="23" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0.5" id="hjt-Bb-GLp">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                 </subviews>
             </view>
             <point key="canvasLocation" x="687.5" y="371.5"/>
@@ -245,5 +219,34 @@ Gw
         <menuItem title="Item 2" id="8gm-Cb-vy2"/>
         <menuItem title="Item 3" id="ZqO-C3-vq0"/>
         <menuItem title="Item 3" id="vmh-Vn-XvZ"/>
+        <slider verticalHuggingPriority="750" id="f9z-sg-9lb">
+            <rect key="frame" x="0.0" y="0.0" width="199" height="19"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <sliderCell key="cell" state="on" alignment="left" maxValue="1" doubleValue="0.5" tickMarkPosition="above" sliderType="linear" id="VZa-7T-lJD"/>
+            <connections>
+                <action selector="sliderValueChanged:" target="-2" id="Rty-7A-mXT"/>
+            </connections>
+            <point key="canvasLocation" x="1117" y="484"/>
+        </slider>
+        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="B1d-b1-Pe3">
+            <rect key="frame" x="0.0" y="0.0" width="23" height="17"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0.5" id="hjt-Bb-GLp">
+                <font key="font" metaFont="system"/>
+                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+            </textFieldCell>
+            <point key="canvasLocation" x="1104" y="533"/>
+        </textField>
+        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="kV9-wj-HhL">
+            <rect key="frame" x="0.0" y="0.0" width="88" height="17"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Compression:" id="HWr-86-0Nx">
+                <font key="font" metaFont="system"/>
+                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+            </textFieldCell>
+            <point key="canvasLocation" x="1100" y="418"/>
+        </textField>
     </objects>
 </document>

@@ -472,6 +472,14 @@
     NSDictionary *imageProps = [NSDictionary dictionaryWithObject:compressionFactor
                                                            forKey:NSImageCompressionFactor];
     
+    NSNumber *compressionFactorCT = [NSNumber numberWithFloat:0.65];
+    NSDictionary *imagePropsCT = [NSDictionary dictionaryWithObject:compressionFactorCT
+                                                           forKey:NSImageCompressionFactor];
+    
+    
+    NSNumber *compressionFactorMRI = [NSNumber numberWithFloat:0.85];
+    NSDictionary *imagePropsMRI = [NSDictionary dictionaryWithObject:compressionFactorMRI
+                                                           forKey:NSImageCompressionFactor];
     
     
     for (NSMutableArray *seriesArray in self.selectedSeries)
@@ -524,9 +532,23 @@
                     im = [[[NSImage alloc] initWithData: data] autorelease];
                 }
                 imageRep = [[im representations] objectAtIndex:0];
-                
-                
-                NSData *imageData = [imageRep representationUsingType:NSJPEGFileType properties:imageProps];
+                NSString *modality = [image modality];
+                NSData *imageData;
+                if ([modality isEqualToString:@"MR"])
+                {
+                    imageData = [imageRep representationUsingType:NSJPEGFileType properties:imagePropsMRI];
+                }
+                else if ([modality isEqualToString:@"CT"])
+                {
+                    imageData = [imageRep representationUsingType:NSJPEGFileType properties:imagePropsCT];
+
+                }
+                else
+                {
+                    imageData = [imageRep representationUsingType:NSJPEGFileType properties:imageProps];
+
+                }
+
                 NSString *imageName = [NSString stringWithFormat:@"%@.jpg", [[image instanceNumber] stringValue]];
                 OZZipWriteStream *stream= [zipFile writeFileInZipWithName:imageName
                                                          compressionLevel:OZZipCompressionLevelBest];
@@ -564,7 +586,7 @@
      */
     
     
-    
+    [self processImages:0.5];
     
     
     // Here we try to retrieve the cases
@@ -576,7 +598,7 @@
     [self.originalWindow beginSheet:self.detailsController.window completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseOK)
         {
-            [self processImages:[self.detailsController.compressionSlider floatValue]];
+            
             
             NSURL *tokenURL = [NSURL URLWithString:@"https://radiopaedia.org/oauth/token"];
             
