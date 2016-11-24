@@ -8,6 +8,8 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="EnterDetailsWindowController">
             <connections>
+                <outlet property="addStudyDaysCheck" destination="4Ka-Zc-HA6" id="vPD-su-Erv"/>
+                <outlet property="addStudyNameCheck" destination="Xpl-Jh-tfm" id="KJj-qm-zCk"/>
                 <outlet property="ageField" destination="uIx-CI-to5" id="th4-9J-ESp"/>
                 <outlet property="caseTitleField" destination="Bhe-6Y-W2c" id="bd2-DZ-DL8"/>
                 <outlet property="caserIDField" destination="FKb-KN-Vwc" id="YTP-te-bTq"/>
@@ -154,7 +156,7 @@ DQ
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m9y-gZ-9RL">
-                        <rect key="frame" x="136" y="122" width="417" height="103"/>
+                        <rect key="frame" x="136" y="156" width="409" height="69"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="wED-8I-iCk">
                             <font key="font" metaFont="system"/>
@@ -213,6 +215,22 @@ Gw
                         <connections>
                             <action selector="LogoutButtonClicked:" target="-2" id="QfF-HD-QdF"/>
                         </connections>
+                    </button>
+                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xpl-Jh-tfm">
+                        <rect key="frame" x="121" y="121" width="259" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" title="Add study names to findings" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="I02-8h-RPi">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                    </button>
+                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Ka-Zc-HA6">
+                        <rect key="frame" x="121" y="90" width="259" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" title="Add study days to caption" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="By9-u5-6am">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
                     </button>
                 </subviews>
             </view>

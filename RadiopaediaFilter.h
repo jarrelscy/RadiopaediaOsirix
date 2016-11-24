@@ -35,6 +35,7 @@
 @property (nonatomic, strong) NSWindow *originalWindow;
 @property (nonatomic, strong) GTMOAuth2WindowController *windowController;
 @property (nonatomic) bool addStudyDaysAsCaption;
+@property (nonatomic) bool addStudyNamesAsFindings;
 -(void) alert:(NSArray *)info;
 
 - (long) filterImage:(NSString*) menuName;

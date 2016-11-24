@@ -25,6 +25,8 @@
 -(long) getSelectedIndex;
 - (void)windowDidLoad;
 -(void) awakeFromNib;
+@property (strong) IBOutlet NSButton *addStudyNameCheck;
+@property (strong) IBOutlet NSButton *addStudyDaysCheck;
 @property (strong) id parent;
 @property (strong) IBOutlet NSButton *logoutButton;
 @property (strong) IBOutlet NSButton *okButton;

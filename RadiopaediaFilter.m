@@ -180,7 +180,8 @@
         NSMutableDictionary *paramsDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                            s, @"system_id",
                                            nil];
-       
+        self.addStudyDaysAsCaption = (bool)self.detailsController.addStudyDaysCheck.state;
+        self.addStudyNamesAsFindings = (bool)self.detailsController.addStudyNameCheck.state;
         if ([self.detailsController.caseTitleField stringValue] != nil && [[self.detailsController.caseTitleField stringValue] length] > 0)
         {
             [paramsDict setObject:[self.detailsController.caseTitleField stringValue] forKey:@"title"];
@@ -344,19 +345,21 @@
     if (modality != nil && [modality length] > 0)
         [paramsDict setObject:modality forKey:@"modality"];
     
-    if ([study date] != nil && self.caseDate != nil)
+    if ([study date] != nil && self.caseDate != nil && self.addStudyDaysAsCaption)
     {
         NSTimeInterval t = [study.date timeIntervalSinceDate:self.caseDate];
         int days = (int)(t / 3600.0 / 24 + 0.5);
-        [paramsDict setObject:[NSString stringWithFormat:@"Day %d", days] forKey:@"caption"];
+        [paramsDict setObject:[NSString stringWithFormat:@"Day %d", days+1] forKey:@"caption"];
     }
+    if(self.addStudyNamesAsFindings)
+    {
     NSMutableArray *seriesNames = [NSMutableArray array];
     for (DicomSeries *series in seriesArray)
     {
         [seriesNames addObject:[series name]];
     }
     [paramsDict setObject:[seriesNames componentsJoinedByString: @","] forKey:@"findings"];    
-    
+    }
     NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
     NSString *urlString = [NSString stringWithFormat:@"https://radiopaedia.org/api/v1/cases/%@/studies", caseId];
     NSMutableURLRequest *request  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:urlString]
