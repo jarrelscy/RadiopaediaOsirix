@@ -317,6 +317,10 @@
     {
         return @"X-ray";
     }
+    else if ([modality isEqualToString:@"DX"])
+    {
+        return @"X-ray";
+    }
     else if ([modality isEqualToString:@"RF"])
     {
         return @"Fluoroscopy";

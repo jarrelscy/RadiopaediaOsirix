@@ -18,6 +18,24 @@
     
     
 }
+-(bool) checkTextField:(NSTextField *)field
+{
+    
+    return (([field stringValue] != nil) && ([[field stringValue] length] > 0));
+}
+-(void) updateOKButton
+{
+    if ([self checkTextField:self.caserIDField] || [self checkTextField:self.caseTitleField])
+    {
+        [self.okButton setEnabled:true];
+    }
+    else
+        [self.okButton setEnabled:false];
+}
+- (void)controlTextDidChange:(NSNotification *)notification {
+    [self updateOKButton];
+}
+
 - (IBAction)OkButtonClicked:(id)sender {
     [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
 }
@@ -45,7 +63,8 @@
     {
         [self.logoutButton setEnabled:true];
     }
-    
+    self.caseTitleField.delegate = self;
+    self.caserIDField.delegate = self;
     self.indexOfSelected = @[@1,@2,@3,@4,@6,@7,@8,@9,@11,@12,@14,@15,@16,@17,@18,@19,@21,@22,@23];
     self.titles =  @[@"",
                                       @"Breast",

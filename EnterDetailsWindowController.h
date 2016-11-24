@@ -27,6 +27,7 @@
 -(void) awakeFromNib;
 @property (strong) id parent;
 @property (strong) IBOutlet NSButton *logoutButton;
+@property (strong) IBOutlet NSButton *okButton;
 @property (strong) IBOutlet NSSlider *compressionSlider;
 @property (strong) IBOutlet NSTextField *compressionValueField;
 @property (strong) IBOutlet NSTextField *caserIDField;
