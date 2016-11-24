@@ -250,34 +250,14 @@
                      i++;
                  }
                  
-                 // add series descriptions
-                 
-                 NSMutableDictionary *paramsDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                 [self.seriesDescriptions componentsJoinedByString: @","], @"description",
-                 nil];
-                 NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
-                 NSString *urlString = [NSString stringWithFormat:@"https://radiopaedia.org/api/v1/cases/%@/free_texts", self.caseId];
-                 NSMutableURLRequest *request2  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:urlString]
-                                                                                paramString:paramStr];
-                 request2.HTTPMethod = @"POST";
-                 [auth authorizeRequest:request2 completionHandler:^(NSError *err)
-                  {
-                      if (err == nil) {
-                          [self.queuedRequests insertObject:request2 atIndex:0];
-                      }
-                      else{
-                      }
-                      
-                  }];
-                 [self.seriesNames insertObject:@"Adding series descriptions..." atIndex:0];
                  
                  // add final request (mark upload finished)
                  
-                 paramsDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                 NSMutableDictionary *paramsDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                                     nil];
-                 paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
-                 urlString = [NSString stringWithFormat:@"https://radiopaedia.org/api/v1/cases/%@/mark_upload_finished", self.caseId];
-                 request2  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:urlString]
+                 NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
+                 NSString *urlString = [NSString stringWithFormat:@"https://radiopaedia.org/api/v1/cases/%@/mark_upload_finished", self.caseId];
+                 NSMutableURLRequest *request2  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:urlString]
                                                                                 paramString:paramStr];
                  request2.HTTPMethod = @"PUT";
                  [auth authorizeRequest:request2 completionHandler:^(NSError *err)
@@ -370,6 +350,12 @@
         int days = (int)(t / 3600.0 / 24 + 0.5);
         [paramsDict setObject:[NSString stringWithFormat:@"Day %d", days] forKey:@"caption"];
     }
+    NSMutableArray *seriesNames = [NSMutableArray array];
+    for (DicomSeries *series in seriesArray)
+    {
+        [seriesNames addObject:[series name]];
+    }
+    [paramsDict setObject:[seriesNames componentsJoinedByString: @","] forKey:@"findings"];    
     
     NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
     NSString *urlString = [NSString stringWithFormat:@"https://radiopaedia.org/api/v1/cases/%@/studies", caseId];
@@ -404,7 +390,7 @@
                  NSMutableURLRequest *request2  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:urlString]
                                                                               paramString:paramStr];
                  request2.HTTPMethod = @"POST";
-                 [self.seriesDescriptions insertObject:[series name] atIndex:0];
+                 
                  
                  NSString *contentType = [NSString stringWithFormat:@"application/zip"];
                  [request2 addValue:contentType forHTTPHeaderField: @"Content-Type"];

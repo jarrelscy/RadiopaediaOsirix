@@ -46,6 +46,8 @@
     [GTMOAuth2WindowController removeAuthFromKeychainForName:KEYCHAIN_ITEM];
     NSAlert *myAlert = [[NSAlert alloc] init];
     [myAlert setMessageText:@"You have been logged out"];
+    RadiopaediaFilter *p = (RadiopaediaFilter *)self.parent;
+    p.isSignedIn = false;
     [self.logoutButton setEnabled:false];
     [myAlert performSelectorOnMainThread:@selector(runModal) withObject:nil waitUntilDone:NO];
 }
