@@ -15,6 +15,7 @@
                 <outlet property="compressionValueField" destination="B1d-b1-Pe3" id="SB8-8b-Wle"/>
                 <outlet property="discussionField" destination="m9y-gZ-9RL" id="rb5-rL-dap"/>
                 <outlet property="genderSelect" destination="D2L-dq-VUC" id="ygM-uI-958"/>
+                <outlet property="logoutButton" destination="bbb-Uh-1Ma" id="wto-j1-gmF"/>
                 <outlet property="presentationField" destination="zIQ-Yr-Y2P" id="vmA-eq-Rei"/>
                 <outlet property="systemSelect" destination="ZkH-Wz-CKe" id="rD5-Jg-ThQ"/>
                 <outlet property="textField" destination="Bhe-6Y-W2c" id="IsX-p1-EHs"/>
@@ -204,7 +205,7 @@ Gw
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bbb-Uh-1Ma">
                         <rect key="frame" x="81" y="44" width="83" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Logout" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="XPP-BX-SaJ">
+                        <buttonCell key="cell" type="push" title="Logout" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="XPP-BX-SaJ">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>

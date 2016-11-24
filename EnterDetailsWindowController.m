@@ -28,6 +28,7 @@
     [GTMOAuth2WindowController removeAuthFromKeychainForName:KEYCHAIN_ITEM];
     NSAlert *myAlert = [[NSAlert alloc] init];
     [myAlert setMessageText:@"You have been logged out"];
+    [self.logoutButton setEnabled:false];
     [myAlert performSelectorOnMainThread:@selector(runModal) withObject:nil waitUntilDone:NO];
 }
 -(long) getSelectedIndex
@@ -39,6 +40,12 @@
 }
 - (void)windowDidLoad
 {
+    RadiopaediaFilter *p = (RadiopaediaFilter *)self.parent;
+    if ([p isSignedIn])
+    {
+        [self.logoutButton setEnabled:true];
+    }
+    
     self.indexOfSelected = @[@1,@2,@3,@4,@6,@7,@8,@9,@11,@12,@14,@15,@16,@17,@18,@19,@21,@22,@23];
     self.titles =  @[@"",
                                       @"Breast",

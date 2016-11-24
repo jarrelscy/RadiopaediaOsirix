@@ -472,12 +472,12 @@
     NSDictionary *imageProps = [NSDictionary dictionaryWithObject:compressionFactor
                                                            forKey:NSImageCompressionFactor];
     
-    NSNumber *compressionFactorCT = [NSNumber numberWithFloat:0.65];
+    NSNumber *compressionFactorCT = [NSNumber numberWithFloat:0.75];
     NSDictionary *imagePropsCT = [NSDictionary dictionaryWithObject:compressionFactorCT
                                                            forKey:NSImageCompressionFactor];
     
     
-    NSNumber *compressionFactorMRI = [NSNumber numberWithFloat:0.85];
+    NSNumber *compressionFactorMRI = [NSNumber numberWithFloat:0.9];
     NSDictionary *imagePropsMRI = [NSDictionary dictionaryWithObject:compressionFactorMRI
                                                            forKey:NSImageCompressionFactor];
     
@@ -588,11 +588,43 @@
     
     [self processImages:0.5];
     
+    NSURL *tokenURL = [NSURL URLWithString:@"https://radiopaedia.org/oauth/token"];
+    
+    // We'll make up an arbitrary redirectURI.  The controller will watch for
+    // the server to redirect the web view to this URI, but this URI will not be
+    // loaded, so it need not be for any actual web page.
+    NSString *redirectURI = @"urn:ietf:wg:oauth:2.0:oob";
+    
+    GTMOAuth2Authentication *auth;
+    auth = [GTMOAuth2Authentication authenticationWithServiceProvider:@"Radiopaedia"
+                                                             tokenURL:tokenURL
+                                                          redirectURI:redirectURI
+                                                             clientID:@"28181d4caa0e95e05c01b6b6afc2f709e3125bd1d1e6a76cbdc92c34353b52a1" // @"9c2d8456fb2798a7bf0406fa4c6a516f57d74b1b0abd13889e4bf831ba5a2735"
+                                                         clientSecret:@"d345535b6aada1038826ba27f1d77170eae63e9698ed63b5ca03296a70093135" //@"4ace663418bbe8e4557d0df18452eca90cd768204f1a950984fcae359dc555b0"
+            ];
+    auth.scope = @"cases";
+    NSURL *authURL = [NSURL URLWithString:@"https://radiopaedia.org/oauth/authorize"];
+    
+    self.isSignedIn = false;
+    if (auth) {
+        BOOL didAuth = [GTMOAuth2WindowController authorizeFromKeychainForName:KEYCHAIN_ITEM
+                                                                authentication:auth];
+        // if the auth object contains an access token, didAuth is now true
+        if (didAuth)
+        {
+            self.isSignedIn = [auth canAuthorize];
+            
+        }
+    }
+    
+
     
     // Here we try to retrieve the cases
     self.detailsController = [[EnterDetailsWindowController alloc] initWithWindowNibName:@"EnterDetailsWindow"];
     //[self.detailsController showWindow:nil];
+    
     self.detailsController.parent = self;
+    
     // REMEMBER MEMORY ON XIB FILE SHOULD BE BUFFERED
     self.originalWindow = [NSApp keyWindow];
     [self.originalWindow beginSheet:self.detailsController.window completionHandler:^(NSModalResponse returnCode) {
@@ -600,36 +632,7 @@
         {
             
             
-            NSURL *tokenURL = [NSURL URLWithString:@"https://radiopaedia.org/oauth/token"];
-            
-            // We'll make up an arbitrary redirectURI.  The controller will watch for
-            // the server to redirect the web view to this URI, but this URI will not be
-            // loaded, so it need not be for any actual web page.
-            NSString *redirectURI = @"urn:ietf:wg:oauth:2.0:oob";
-            
-            GTMOAuth2Authentication *auth;
-            auth = [GTMOAuth2Authentication authenticationWithServiceProvider:@"Radiopaedia"
-                                                                     tokenURL:tokenURL
-                                                                  redirectURI:redirectURI
-                                                                     clientID:@"28181d4caa0e95e05c01b6b6afc2f709e3125bd1d1e6a76cbdc92c34353b52a1" // @"9c2d8456fb2798a7bf0406fa4c6a516f57d74b1b0abd13889e4bf831ba5a2735"
-                                                                 clientSecret:@"d345535b6aada1038826ba27f1d77170eae63e9698ed63b5ca03296a70093135" //@"4ace663418bbe8e4557d0df18452eca90cd768204f1a950984fcae359dc555b0"
-                    ];
-            auth.scope = @"cases";
-            NSURL *authURL = [NSURL URLWithString:@"https://radiopaedia.org/oauth/authorize"];
-            
-            BOOL isSignedIn = false;
-            if (auth) {
-                BOOL didAuth = [GTMOAuth2WindowController authorizeFromKeychainForName:KEYCHAIN_ITEM
-                                                                          authentication:auth];
-                // if the auth object contains an access token, didAuth is now true
-                if (didAuth)
-                {
-                    isSignedIn = [auth canAuthorize];
-                    
-                }
-            }
-            
-            if (!isSignedIn)
+            if (!self.isSignedIn)
             {
                 self.windowController = [GTMOAuth2WindowController controllerWithAuthentication:auth
                                                                           authorizationURL:authURL
