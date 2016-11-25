@@ -345,7 +345,7 @@
     if (modality != nil && [modality length] > 0)
         [paramsDict setObject:modality forKey:@"modality"];
     
-    if ([study date] != nil && self.caseDate != nil && self.addStudyDaysAsCaption)
+    if ([study date] != nil && self.caseDate != nil && self.addStudyDaysAsCaption && [self.selectedSeries count] > 1)
     {
         NSTimeInterval t = [study.date timeIntervalSinceDate:self.caseDate];
         int days = (int)(t / 3600.0 / 24 + 0.5);
