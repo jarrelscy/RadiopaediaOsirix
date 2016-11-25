@@ -594,6 +594,7 @@
     self.patientAge = @"";
     self.patientSex = @"Unknown";
     self.patientAgeInt = 999999;
+    self.caseDate = nil;
    /* NSString* message = [[NSUserDefaults standardUserDefaults] stringForKey:@"HelloWorld_Message"];
     if (!message) message = @"Define this message in the Hello World plugin's preferences";
     
