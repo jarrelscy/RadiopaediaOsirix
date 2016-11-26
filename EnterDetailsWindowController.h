@@ -20,6 +20,7 @@
 {
 
 }
+- (IBAction)openTipsAndTricks:(id)sender;
 @property (strong) NSArray *titles;
 @property (strong) NSArray *indexOfSelected;
 -(long) getSelectedIndex;

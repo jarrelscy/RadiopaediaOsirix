@@ -512,7 +512,7 @@
         {
             DicomStudy *study = [series study];
             NSTimeInterval t = [study.date timeIntervalSinceDate:study.dateOfBirth];
-            int tempAge = (int)(t / 3600.0 / 24 / 365);
+            float tempAge = (float)(t / 3600.0 / 24 / 365);
             if (self.caseDate == nil || (self.caseDate != nil && (int )[study.date timeIntervalSinceDate:self.caseDate] < 0 ))
                 {
                     self.caseDate = study.date;
@@ -520,10 +520,18 @@
             if (tempAge > 0)
             {
                 
-                if(tempAge < self.patientAgeInt)
+                if(tempAge < self.patientAgeFloat)
                 {
-                    self.patientAge = [NSString stringWithFormat:@"%d", tempAge];
-                    self.patientAgeInt = tempAge;
+                    if (tempAge > 2.0f)
+                        self.patientAge = [NSString stringWithFormat:@"%d years", (int )tempAge];
+                    else if (tempAge > (2.0f / 12.0f))
+                        self.patientAge = [NSString stringWithFormat:@"%d months", (int )(tempAge * 12)];
+                    else if (tempAge > (14.0f / 365.0f))
+                        self.patientAge = [NSString stringWithFormat:@"%d weeks", (int )(tempAge * 52)];
+                    else
+                        self.patientAge = [NSString stringWithFormat:@"%d days", (int )(tempAge * 365)];
+                    
+                    self.patientAgeFloat = tempAge;
                     
                 }
             }
@@ -593,7 +601,7 @@
 {
     self.patientAge = @"";
     self.patientSex = @"Unknown";
-    self.patientAgeInt = 999999;
+    self.patientAgeFloat = 999999.0f;
     self.caseDate = nil;
    /* NSString* message = [[NSUserDefaults standardUserDefaults] stringForKey:@"HelloWorld_Message"];
     if (!message) message = @"Define this message in the Hello World plugin's preferences";

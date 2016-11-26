@@ -21,7 +21,9 @@
    {
        
        [self.statusLabel setStringValue:self.statusCode];
-     [self.ridLabel setStringValue:((RadiopaediaFilter *)(self.parent)).caseId];
+       NSString *original = [NSString stringWithFormat:@"%@", ((RadiopaediaFilter *)(self.parent)).caseId];
+       NSString *replaced = [original stringByReplacingOccurrencesOfString:@"," withString:@""];
+     [self.ridLabel setStringValue:replaced];
     NSString *s = [NSString stringWithFormat:@"https://radiopaedia.org/cases/%@", ((RadiopaediaFilter *)(self.parent)).caseId];
     
     [self.hyperlinkLabel setAutomaticLinkDetectionEnabled:TRUE];

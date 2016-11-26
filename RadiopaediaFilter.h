@@ -19,7 +19,7 @@
 @property (nonatomic, strong) NSMutableArray *seriesNames;
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *patientAge;
-@property (nonatomic) int patientAgeInt;
+@property (nonatomic) float patientAgeFloat;
 @property (nonatomic) bool isSignedIn;
 @property (nonatomic) float compressionValue;
 @property (nonatomic, strong) NSDate *caseDate;

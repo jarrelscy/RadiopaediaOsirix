@@ -143,4 +143,7 @@
         [invocation invoke];
     }
 }
+- (IBAction)openTipsAndTricks:(id)sender {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://radiopaedia.org/blog/radiopaedia-case-uploader-plugin-for-horos-osirix"]];
+}
 @end
