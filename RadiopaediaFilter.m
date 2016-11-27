@@ -223,15 +223,28 @@
                  else
                  {
                      NSError *requestError = nil;
-                     NSURLResponse *urlResponse = nil;
+                     NSHTTPURLResponse *urlResponse = nil;
                      NSData *response1 =
                      [NSURLConnection sendSynchronousRequest:request
                                            returningResponse:&urlResponse error:&requestError];
                      NSDictionary *jsonArray = [NSJSONSerialization JSONObjectWithData:response1 options: NSJSONReadingMutableContainers error: &requestError];
                      
                      NSString *caseId = [jsonArray objectForKey:@"id"];
+                     self.caseCreationStatus = [urlResponse statusCode];
                      self.caseId = caseId;
                      self.returnedCaseTitle = [jsonArray objectForKey:@"title"];
+                     
+                 }
+                 if (self.caseCreationStatus != 200 && self.caseCreationStatus != 201)
+                 {
+                     NSAlert *myAlert = [NSAlert alertWithMessageText:@"Could not create case"
+                                                        defaultButton:@"OK"
+                                                      alternateButton:nil
+                                                          otherButton:nil
+                                            informativeTextWithFormat:@"Error %ld. If you have reached your maximum number of draft cases then we suggest you publish some of your cases or become a Radiopaedia supporter to increase your draft case allowance.", self.caseCreationStatus];
+                     [GTMOAuth2WindowController removeAuthFromKeychainForName:KEYCHAIN_ITEM];
+                     [myAlert performSelectorOnMainThread:@selector(runModal) withObject:nil waitUntilDone:NO];
+                     return;
                  }
                  self.seriesNames = [NSMutableArray array];
                  self.queuedRequests = [NSMutableArray array];
@@ -736,8 +749,10 @@
         self.finishedWindowController.parent = self;
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
         self.finishedWindowController.statusCode = @"Your case has uploaded successfully!";
-        if ([httpResponse statusCode] != 200)
-            self.finishedWindowController.statusCode = [NSString stringWithFormat:@"Error in uploading - status code: %ld", [httpResponse statusCode]];
+        if ([httpResponse statusCode] != 200 && [httpResponse statusCode] != 201)
+            self.finishedWindowController.statusCode = [NSString stringWithFormat:@"Error in uploading - status code: %ld. If you have reached your maximum number of draft cases then we suggest you publish some of your cases or become a Radiopaedia supporter to increase your draft case allowance.", [httpResponse statusCode]];
+        if (self.caseCreationStatus != 200 && self.caseCreationStatus != 201)
+            self.finishedWindowController.statusCode = [NSString stringWithFormat:@"Error in creating case - status code: %ld. If you have reached your maximum number of draft cases then we suggest you publish some of your cases or become a Radiopaedia supporter to increase your draft case allowance.", self.caseCreationStatus];
         [self.originalWindow beginSheet:self.finishedWindowController.window completionHandler:^(NSModalResponse returnCode) {
            
         }];

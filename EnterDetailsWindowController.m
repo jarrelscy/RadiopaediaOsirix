@@ -23,9 +23,16 @@
     
     return (([field stringValue] != nil) && ([[field stringValue] length] > 0));
 }
+-(bool) checkTextFieldContainsNumeric:(NSTextField *)field
+{
+    NSString *s = [field stringValue];
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+    return !([numberFormatter numberFromString:s] == nil);
+    
+}
 -(void) updateOKButton
 {
-    if ([self checkTextField:self.caserIDField] || [self checkTextField:self.caseTitleField])
+    if ([self checkTextField:self.caserIDField] || ([self checkTextField:self.caseTitleField] && ![self checkTextFieldContainsNumeric:self.caseTitleField]))
     {
         [self.okButton setEnabled:true];
     }
@@ -50,6 +57,7 @@
     p.isSignedIn = false;
     [self.logoutButton setEnabled:false];
     [myAlert performSelectorOnMainThread:@selector(runModal) withObject:nil waitUntilDone:NO];
+    [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseCancel];
 }
 -(long) getSelectedIndex
 {
@@ -60,6 +68,13 @@
 }
 - (void)windowDidLoad
 {
+    [self.supportLabel setAllowsEditingTextAttributes: YES];
+    [self.supportLabel setSelectable: YES];
+
+    NSMutableAttributedString * str = [[NSMutableAttributedString alloc] initWithString:@"Become a Radiopaedia Supporter!"];
+    [str addAttribute: NSLinkAttributeName value: @"https://radiopaedia.org/supporters" range: NSMakeRange(0, str.length)];
+    [self.supportLabel setAttributedStringValue:str];
+    
     RadiopaediaFilter *p = (RadiopaediaFilter *)self.parent;
     if ([p isSignedIn])
     {

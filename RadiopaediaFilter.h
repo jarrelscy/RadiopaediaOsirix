@@ -27,6 +27,7 @@
 @property (nonatomic, strong) NSString *returnedCaseTitle;
 @property (nonatomic, strong) NSString *caseId;
 @property (nonatomic, strong) NSString *system;
+@property (nonatomic) long caseCreationStatus;
 @property (nonatomic, strong) NSMutableArray *queuedRequests;
 @property (nonatomic, strong) NSMutableArray *seriesDescriptions;
 @property (nonatomic, strong) FinishedWindowController* finishedWindowController;
