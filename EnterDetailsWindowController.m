@@ -68,14 +68,7 @@
 }
 - (void)windowDidLoad
 {
-    [self.supportLabel setAllowsEditingTextAttributes: YES];
-    [self.supportLabel setSelectable: YES];
-
-    NSMutableAttributedString * str = [[NSMutableAttributedString alloc] initWithString:@"Become a Radiopaedia Supporter!"];
-    [str addAttribute: NSLinkAttributeName value: @"https://radiopaedia.org/supporters" range: NSMakeRange(0, str.length)];
-    [str addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSSingleUnderlineStyle] range:NSMakeRange(0, str.length)];
-    [str addAttribute:NSStrokeColorAttributeName value:[NSColor blueColor] range:NSMakeRange(0, str.length)];
-    [self.supportLabel setAttributedStringValue:str];
+    
     
     RadiopaediaFilter *p = (RadiopaediaFilter *)self.parent;
     if ([p isSignedIn])
@@ -140,6 +133,9 @@
     [self.window makeFirstResponder:self.caseTitleField];
     [self.ageField setStringValue:((RadiopaediaFilter *)self.parent).patientAge];
     [self.genderSelect selectItemWithTitle:((RadiopaediaFilter *)self.parent).patientSex];
+}
+- (IBAction)supportButton:(id)sender {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://radiopaedia.org/supporters"]];
 }
 - (IBAction)sliderValueChanged:(id)sender {
     [self.compressionValueField setStringValue:[NSString stringWithFormat:@"%f", [self.compressionSlider floatValue]]];

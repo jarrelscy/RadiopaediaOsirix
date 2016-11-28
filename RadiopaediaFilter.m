@@ -237,6 +237,7 @@
                  }
                  if (self.caseCreationStatus != 200 && self.caseCreationStatus != 201)
                  {
+                     
                      NSAlert *myAlert = [NSAlert alertWithMessageText:@"Could not create case"
                                                         defaultButton:@"OK"
                                                       alternateButton:nil
