@@ -32,7 +32,7 @@
 }
 -(void) updateOKButton
 {
-    if ([self checkTextField:self.caserIDField] || ([self checkTextField:self.caseTitleField] && ![self checkTextFieldContainsNumeric:self.caseTitleField]))
+    if (([self checkTextField:self.caserIDField] && [self checkTextFieldContainsNumeric:self.caserIDField])|| ([self checkTextField:self.caseTitleField] && ![self checkTextFieldContainsNumeric:self.caseTitleField]))
     {
         [self.okButton setEnabled:true];
     }
