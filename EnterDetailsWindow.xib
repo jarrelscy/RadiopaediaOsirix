@@ -207,7 +207,7 @@ Gw
                             <action selector="LogoutButtonClicked:" target="-2" id="QfF-HD-QdF"/>
                         </connections>
                     </button>
-                    <button toolTip="Check this box if you want series titles to be added to the study caption - this may help e.g. in MRIs with multiple series. " fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xpl-Jh-tfm">
+                    <button toolTip="Check this box if you want series titles to be added to the study findings - this may help e.g. in MRIs with multiple series. " fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xpl-Jh-tfm">
                         <rect key="frame" x="121" y="185" width="259" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Add series titles" bezelStyle="regularSquare" imagePosition="left" inset="2" id="I02-8h-RPi">
