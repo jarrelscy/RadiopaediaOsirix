@@ -77,6 +77,7 @@
 		C38C0FAE1CBA5277005BE864 /* EnterDetailsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C38C0FAD1CBA5277005BE864 /* EnterDetailsWindow.xib */; };
 		C38C0FB81CBA5468005BE864 /* EnterDetailsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C38C0FB71CBA5468005BE864 /* EnterDetailsWindowController.m */; };
 		C38C0FBA1CBA5473005BE864 /* EnterDetailsWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = C38C0FB91CBA5473005BE864 /* EnterDetailsWindowController.h */; };
+		C391CADD1DEBE41600346207 /* Info-Button.png in Resources */ = {isa = PBXBuildFile; fileRef = C391CADC1DEBE41600346207 /* Info-Button.png */; };
 		C39357CB1CC2698F00B93C21 /* ProgressWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C39357CA1CC2698F00B93C21 /* ProgressWindow.xib */; };
 		C39357CD1CC3AFDD00B93C21 /* ProgressWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C39357CC1CC3AFDD00B93C21 /* ProgressWindowController.m */; };
 		C39357CF1CC3B01900B93C21 /* ProgressWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = C39357CE1CC3B01900B93C21 /* ProgressWindowController.h */; };
@@ -180,6 +181,7 @@
 		C38C0FAD1CBA5277005BE864 /* EnterDetailsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EnterDetailsWindow.xib; sourceTree = "<group>"; };
 		C38C0FB71CBA5468005BE864 /* EnterDetailsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnterDetailsWindowController.m; sourceTree = "<group>"; };
 		C38C0FB91CBA5473005BE864 /* EnterDetailsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnterDetailsWindowController.h; sourceTree = "<group>"; };
+		C391CADC1DEBE41600346207 /* Info-Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Info-Button.png"; sourceTree = "<group>"; };
 		C39357CA1CC2698F00B93C21 /* ProgressWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProgressWindow.xib; sourceTree = "<group>"; };
 		C39357CC1CC3AFDD00B93C21 /* ProgressWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressWindowController.m; sourceTree = "<group>"; };
 		C39357CE1CC3B01900B93C21 /* ProgressWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressWindowController.h; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 		AB2C26750677B0C400A08910 /* RadiopaediaFilter */ = {
 			isa = PBXGroup;
 			children = (
+				C391CADC1DEBE41600346207 /* Info-Button.png */,
 				C38ACFDE1CC787F800B7EF3A /* Accelerate.framework */,
 				C3292B8F1CB69A09001F4F71 /* GTMOAuth2Authentication.h */,
 				C3292B901CB69A09001F4F71 /* GTMOAuth2Authentication.m */,
@@ -513,6 +516,7 @@
 				C3D1EC941CB69999003DF091 /* GTMOAuth2Window.xib in Resources */,
 				C3EC7BFE1CC7B5FA00C38CBC /* FinishedWindow.xib in Resources */,
 				C38C0FAE1CBA5277005BE864 /* EnterDetailsWindow.xib in Resources */,
+				C391CADD1DEBE41600346207 /* Info-Button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
