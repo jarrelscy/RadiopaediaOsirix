@@ -73,6 +73,8 @@
 
     NSMutableAttributedString * str = [[NSMutableAttributedString alloc] initWithString:@"Become a Radiopaedia Supporter!"];
     [str addAttribute: NSLinkAttributeName value: @"https://radiopaedia.org/supporters" range: NSMakeRange(0, str.length)];
+    [str addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSSingleUnderlineStyle] range:NSMakeRange(0, str.length)];
+    [str addAttribute:NSStrokeColorAttributeName value:[NSColor blueColor] range:NSMakeRange(0, str.length)];
     [self.supportLabel setAttributedStringValue:str];
     
     RadiopaediaFilter *p = (RadiopaediaFilter *)self.parent;
