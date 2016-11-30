@@ -242,7 +242,7 @@
                                                         defaultButton:@"OK"
                                                       alternateButton:nil
                                                           otherButton:nil
-                                            informativeTextWithFormat:@"Error %ld. If you have reached your maximum number of draft cases then we suggest you publish some of your cases or become a Radiopaedia supporter to increase your draft case allowance.", self.caseCreationStatus];
+                                            informativeTextWithFormat:@"Error %ld. This can occur for a variety of reasons. You may, for example. have reached your maximum number of draft cases. To check, please visit your profile page on Radiopaedia.org and consider publishing some cases or becoming a supporter. ", self.caseCreationStatus];
                      [GTMOAuth2WindowController removeAuthFromKeychainForName:KEYCHAIN_ITEM];
                      [myAlert performSelectorOnMainThread:@selector(runModal) withObject:nil waitUntilDone:NO];
                      return;
@@ -465,20 +465,7 @@
     self.selectedSeries = [NSMutableArray array];
     self.zipFiles = [NSMutableArray array];
     for (id item in selectedItems) {
-        if ([item isKindOfClass:[DicomStudy class]]) {
-            DicomStudy *study = (DicomStudy*) item;
-            
-            [self.selectedStudies addObject:study];
-            
-            NSMutableArray *tempArray = [NSMutableArray array];
-            [self.selectedSeries addObject:tempArray];
-            
-            for (DicomSeries *series in [study imageSeries])
-            {
-                [tempArray addObject:series];
-            }
-            
-        } else if ([item isKindOfClass:[DicomSeries class]])
+        if ([item isKindOfClass:[DicomSeries class]])
         {
             DicomSeries *series = (DicomSeries *)item;
             NSMutableArray *tempArray;
@@ -500,6 +487,29 @@
             [tempArray addObject:(DicomSeries*) item];
         }
     }
+    for (id item in selectedItems) {
+        if ([item isKindOfClass:[DicomStudy class]]) {
+            DicomStudy *study = (DicomStudy*) item;
+            // if specific series were selected - ignore entire study
+            if ([self.selectedStudies containsObject:study])
+            {
+                
+            }
+            else
+            {
+                [self.selectedStudies addObject:study];
+                
+                NSMutableArray *tempArray = [NSMutableArray array];
+                [self.selectedSeries addObject:tempArray];
+                
+                for (DicomSeries *series in [study imageSeries])
+                {
+                    [tempArray addObject:series];
+                }
+            }
+            
+        }
+    }
     
     
     // Process dicom series
@@ -507,7 +517,7 @@
     NSDictionary *imageProps = [NSDictionary dictionaryWithObject:compressionFactor
                                                            forKey:NSImageCompressionFactor];
     
-    NSNumber *compressionFactorCT = [NSNumber numberWithFloat:0.75];
+    NSNumber *compressionFactorCT = [NSNumber numberWithFloat:0.7];
     NSDictionary *imagePropsCT = [NSDictionary dictionaryWithObject:compressionFactorCT
                                                            forKey:NSImageCompressionFactor];
     
@@ -635,7 +645,7 @@
      */
     
     
-    [self processImages:0.5];
+    [self processImages:0.65];
     
     NSURL *tokenURL = [NSURL URLWithString:@"https://radiopaedia.org/oauth/token"];
     
