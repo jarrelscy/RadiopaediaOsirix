@@ -235,10 +235,21 @@
                      self.returnedCaseTitle = [jsonArray objectForKey:@"title"];
                      
                  }
-                 if (self.caseCreationStatus != 200 && self.caseCreationStatus != 201)
+                 if (self.caseCreationStatus == 0)
+                 {
+                     NSAlert *myAlert = [NSAlert alertWithMessageText:@"Could not upload data"
+                                                        defaultButton:@"OK"
+                                                      alternateButton:nil
+                                                          otherButton:nil
+                                            informativeTextWithFormat:@"Error %ld. There is a communication issue with reaching Radiopaedia and your study could not be uploaded. Make sure you are connected to the internet and try again. ", self.caseCreationStatus];
+                     [GTMOAuth2WindowController removeAuthFromKeychainForName:KEYCHAIN_ITEM];
+                     [myAlert performSelectorOnMainThread:@selector(runModal) withObject:nil waitUntilDone:NO];
+                     return;
+                 }
+                 else if (self.caseCreationStatus != 200 && self.caseCreationStatus != 201)
                  {
                      
-                     NSAlert *myAlert = [NSAlert alertWithMessageText:@"Could not create case"
+                     NSAlert *myAlert = [NSAlert alertWithMessageText:@"Could not upload data"
                                                         defaultButton:@"OK"
                                                       alternateButton:nil
                                                           otherButton:nil
@@ -437,7 +448,7 @@
                                                 defaultButton:@"Ok"
                                               alternateButton:nil
                                                   otherButton:nil
-                                    informativeTextWithFormat:@"Failed to upload %@: %@",[study name], [err description]];
+                                    informativeTextWithFormat:@"Failed to upload %@: %@, Error code %ld",[study name], [err description], (long)[err code]];
              
              [myAlert runModal];
          }
@@ -764,6 +775,10 @@
             self.finishedWindowController.statusCode = [NSString stringWithFormat:@"Error in uploading - status code: %ld. If you have reached your maximum number of draft cases then we suggest you publish some of your cases or become a Radiopaedia supporter to increase your draft case allowance.", [httpResponse statusCode]];
         if (self.caseCreationStatus != 200 && self.caseCreationStatus != 201)
             self.finishedWindowController.statusCode = [NSString stringWithFormat:@"Error in creating case - status code: %ld. If you have reached your maximum number of draft cases then we suggest you publish some of your cases or become a Radiopaedia supporter to increase your draft case allowance.", self.caseCreationStatus];
+        if ([httpResponse statusCode] == 0 || self.caseCreationStatus == 0)
+        {
+            self.finishedWindowController.statusCode = [NSString stringWithFormat:@"Error in creating case - status code: %ld. There is a communication issue with reaching Radiopaedia and your study could not be uploaded. Make sure you are connected to the internet and try again.", self.caseCreationStatus];
+        }
         [self.originalWindow beginSheet:self.finishedWindowController.window completionHandler:^(NSModalResponse returnCode) {
            
         }];
