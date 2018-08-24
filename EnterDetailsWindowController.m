@@ -77,7 +77,7 @@
     }
     self.caseTitleField.delegate = self;
     self.caserIDField.delegate = self;
-    self.indexOfSelected = @[@1,@2,@3,@4,@6,@7,@8,@9,@11,@12,@14,@15,@16,@17,@18,@19,@21,@22,@23];
+    self.indexOfSelected = @[@1,@2,@3,@4,@6,@7,@8,@9,@11,@12,@15,@16,@17,@18,@19,@20,@21,@22,@23];
     self.titles =  @[@"",
                                       @"Breast",
                                       @"Vascular",
@@ -92,13 +92,13 @@
                                       @"Urogenital",
                                       @"Paediatrics",
                                       @"",
+                                      @"",
                                       @"Spine",
                                       @"Cardiac",
                                       @"Interventional",
                                       @"Obstetrics",
                                       @"Gynaecology",
                                       @"Haematology",
-                                      @"",
                                       @"Forensic",
                                       @"Oncology",
                                       @"Trauma"];
