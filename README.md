@@ -1,7 +1,7 @@
 # RadiopaediaOsirix
 This is a plugin for Osirix for Radiopaedia. This works with Horos as well. This helps upload series 
 
-Tested with Horos 3.1.2 and Osirix Lite v8.0.1
+Tested with Horos 3.1.2 and Osirix Lite v9.5.2
 
 # Installation instructions
 1. Go to https://github.com/jarrelscy/RadiopaediaOsirix/releases/download/0.1.1/Radiopaedia.osirixplugin.zip
