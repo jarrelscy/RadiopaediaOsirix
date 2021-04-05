@@ -405,7 +405,7 @@ finishedWithFetcher:(GTMOAuth2Fetcher *)fetcher
                  && [[redirectURL pathComponents] isEqual:[[requestURL pathComponents] subarrayWithRange:range] ]; // remove last component for comparison
   } else if (requestURL) {
     // handle "about:blank"
-    isCallback = [redirectURL isEqual:requestURL];
+      isCallback = [redirectURL isEqual:requestURL];
   } else {
     isCallback = NO;
   }
@@ -419,7 +419,15 @@ finishedWithFetcher:(GTMOAuth2Fetcher *)fetcher
 
   // try to get the access code
   if (!self.hasHandledCallback) {
-      self.authentication.code = [[[redirectedRequest URL] pathComponents] lastObject];
+      
+      NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+      for (NSString *param in [[[redirectedRequest URL] query] componentsSeparatedByString:@"&"]) {
+        NSArray *elts = [param componentsSeparatedByString:@"="];
+        if([elts count] < 2) continue;
+        [params setObject:[elts lastObject] forKey:[elts firstObject]];
+      }
+      
+      self.authentication.code = [params valueForKey:@"code"];
 
 #if DEBUG
     NSAssert([self.authentication.code length] > 0

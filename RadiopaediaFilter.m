@@ -253,7 +253,7 @@
                                                         defaultButton:@"OK"
                                                       alternateButton:nil
                                                           otherButton:nil
-                                            informativeTextWithFormat:@"Error %ld. This can occur for a variety of reasons. You may, for example. have reached your maximum number of draft cases. To check, please visit your profile page on Radiopaedia.org and consider publishing some cases or becoming a supporter. ", self.caseCreationStatus];
+                                            informativeTextWithFormat:@"Error %ld. This can occur for a variety of reasons. You may, for example. have reached your maximum number of draft cases. To check, please visit your profile page on radiopaedia.org and consider publishing some cases or becoming a supporter. ", self.caseCreationStatus];
                      [GTMOAuth2WindowController removeAuthFromKeychainForName:KEYCHAIN_ITEM];
                      [myAlert performSelectorOnMainThread:@selector(runModal) withObject:nil waitUntilDone:NO];
                      return;
@@ -669,8 +669,8 @@
     auth = [GTMOAuth2Authentication authenticationWithServiceProvider:@"Radiopaedia"
                                                              tokenURL:tokenURL
                                                           redirectURI:redirectURI
-                                                             clientID:@"28181d4caa0e95e05c01b6b6afc2f709e3125bd1d1e6a76cbdc92c34353b52a1" // @"9c2d8456fb2798a7bf0406fa4c6a516f57d74b1b0abd13889e4bf831ba5a2735"
-                                                         clientSecret:@"d345535b6aada1038826ba27f1d77170eae63e9698ed63b5ca03296a70093135" //@"4ace663418bbe8e4557d0df18452eca90cd768204f1a950984fcae359dc555b0"
+                                                             clientID:YOUR_ID_HERE
+                                                         clientSecret:YOUR_SECRET_HERE
             ];
     auth.scope = @"cases";
     NSURL *authURL = [NSURL URLWithString:@"https://radiopaedia.org/oauth/authorize"];
