@@ -17,13 +17,19 @@
 }
 - (void)windowDidLoad
 {
-    [self.ridLabel setStringValue:((RadiopaediaFilter *)(self.parent)).caseId];
-    NSString *s = [NSString stringWithFormat:@"http://sandbox.radiopaedia.org/cases/%@", ((RadiopaediaFilter *)(self.parent)).caseId];
+    if (((RadiopaediaFilter *)(self.parent)).caseId != nil)
+   {
+       
+       [self.statusLabel setStringValue:self.statusCode];
+       NSString *original = [NSString stringWithFormat:@"%@", ((RadiopaediaFilter *)(self.parent)).caseId];
+       NSString *replaced = [original stringByReplacingOccurrencesOfString:@"," withString:@""];
+     [self.ridLabel setStringValue:replaced];
+    NSString *s = [NSString stringWithFormat:@"https://radiopaedia.org/cases/%@", ((RadiopaediaFilter *)(self.parent)).caseId];
     
     [self.hyperlinkLabel setAutomaticLinkDetectionEnabled:TRUE];
     
     [self.hyperlinkLabel setString:s];
     [self.hyperlinkLabel checkTextInDocument:nil];
-        
+   }
 }
 @end

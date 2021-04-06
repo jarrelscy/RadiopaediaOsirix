@@ -7,11 +7,17 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="EnterDetailsWindowController">
             <connections>
+                <outlet property="addStudyDaysCheck" destination="4Ka-Zc-HA6" id="vPD-su-Erv"/>
+                <outlet property="addStudyNameCheck" destination="Xpl-Jh-tfm" id="KJj-qm-zCk"/>
                 <outlet property="ageField" destination="uIx-CI-to5" id="th4-9J-ESp"/>
                 <outlet property="caseTitleField" destination="Bhe-6Y-W2c" id="bd2-DZ-DL8"/>
                 <outlet property="caserIDField" destination="FKb-KN-Vwc" id="YTP-te-bTq"/>
+                <outlet property="compressionSlider" destination="f9z-sg-9lb" id="S0v-ji-dyd"/>
+                <outlet property="compressionValueField" destination="B1d-b1-Pe3" id="SB8-8b-Wle"/>
                 <outlet property="discussionField" destination="m9y-gZ-9RL" id="rb5-rL-dap"/>
                 <outlet property="genderSelect" destination="D2L-dq-VUC" id="ygM-uI-958"/>
+                <outlet property="logoutButton" destination="bbb-Uh-1Ma" id="wto-j1-gmF"/>
+                <outlet property="okButton" destination="g0K-Wk-NbD" id="IHY-8c-mfR"/>
                 <outlet property="presentationField" destination="zIQ-Yr-Y2P" id="vmA-eq-Rei"/>
                 <outlet property="systemSelect" destination="ZkH-Wz-CKe" id="rD5-Jg-ThQ"/>
                 <outlet property="textField" destination="Bhe-6Y-W2c" id="IsX-p1-EHs"/>
@@ -20,7 +26,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
+        <window title="Case details" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="582" height="524"/>
@@ -196,5 +202,37 @@ Gw
         <menuItem title="Item 2" id="8gm-Cb-vy2"/>
         <menuItem title="Item 3" id="ZqO-C3-vq0"/>
         <menuItem title="Item 3" id="vmh-Vn-XvZ"/>
+        <slider verticalHuggingPriority="750" id="f9z-sg-9lb">
+            <rect key="frame" x="0.0" y="0.0" width="199" height="19"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <sliderCell key="cell" state="on" alignment="left" maxValue="1" doubleValue="0.5" tickMarkPosition="above" sliderType="linear" id="VZa-7T-lJD"/>
+            <connections>
+                <action selector="sliderValueChanged:" target="-2" id="Rty-7A-mXT"/>
+            </connections>
+            <point key="canvasLocation" x="1117" y="484"/>
+        </slider>
+        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="B1d-b1-Pe3">
+            <rect key="frame" x="0.0" y="0.0" width="23" height="17"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0.5" id="hjt-Bb-GLp">
+                <font key="font" metaFont="system"/>
+                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+            </textFieldCell>
+            <point key="canvasLocation" x="1104" y="533"/>
+        </textField>
+        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="kV9-wj-HhL">
+            <rect key="frame" x="0.0" y="0.0" width="88" height="17"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Compression:" id="HWr-86-0Nx">
+                <font key="font" metaFont="system"/>
+                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+            </textFieldCell>
+            <point key="canvasLocation" x="1100" y="418"/>
+        </textField>
     </objects>
+    <resources>
+        <image name="Info-Button" width="2382" height="2382"/>
+    </resources>
 </document>

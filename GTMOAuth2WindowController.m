@@ -499,7 +499,7 @@ static Class gSignInClass = Nil;
 }
 
 - (void)webView:(WebView *)sender resource:(id)identifier didFailLoadingWithError:(NSError *)error fromDataSource:(WebDataSource *)dataSource {
-  [self.signIn loadFailedWithError:error];
+    [self.signIn loadFailedWithError:error];
 }
 
 - (void)windowWillClose:(NSNotification *)note {

@@ -175,11 +175,13 @@
     } else {
         
         
-        
+        long selectedVal = (long)[[self detailsController] getSelectedIndex];
+        NSString *s = [NSString stringWithFormat:@"%ld", selectedVal];
         NSMutableDictionary *paramsDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                           [NSString stringWithFormat:@"%ld", (long)[self.detailsController.systemSelect indexOfSelectedItem]], @"system_id",
+                                           s, @"system_id",
                                            nil];
-       
+        self.addStudyDaysAsCaption = (bool)self.detailsController.addStudyDaysCheck.state;
+        self.addStudyNamesAsFindings = (bool)self.detailsController.addStudyNameCheck.state;
         if ([self.detailsController.caseTitleField stringValue] != nil && [[self.detailsController.caseTitleField stringValue] length] > 0)
         {
             [paramsDict setObject:[self.detailsController.caseTitleField stringValue] forKey:@"title"];
@@ -200,15 +202,12 @@
         {
             [paramsDict setObject:[self.detailsController.discussionField stringValue] forKey:@"body"];
         }
-
-        
         
         
         NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
-        NSMutableURLRequest *request  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:@"http://sandbox.radiopaedia.org/api/v1/cases"]
+        NSMutableURLRequest *request  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:@"https://radiopaedia.org/api/v1/cases"]
                                       paramString:paramStr];
         request.HTTPMethod = @"POST";
-        
         
         [auth authorizeRequest:request completionHandler:^(NSError *err)
          {
@@ -224,23 +223,79 @@
                  else
                  {
                      NSError *requestError = nil;
-                     NSURLResponse *urlResponse = nil;
+                     NSHTTPURLResponse *urlResponse = nil;
                      NSData *response1 =
                      [NSURLConnection sendSynchronousRequest:request
                                            returningResponse:&urlResponse error:&requestError];
                      NSDictionary *jsonArray = [NSJSONSerialization JSONObjectWithData:response1 options: NSJSONReadingMutableContainers error: &requestError];
                      
                      NSString *caseId = [jsonArray objectForKey:@"id"];
+                     self.caseCreationStatus = [urlResponse statusCode];
                      self.caseId = caseId;
                      self.returnedCaseTitle = [jsonArray objectForKey:@"title"];
+                     
+                 }
+                 if (self.caseCreationStatus == 0)
+                 {
+                     NSAlert *myAlert = [NSAlert alertWithMessageText:@"Could not upload data"
+                                                        defaultButton:@"OK"
+                                                      alternateButton:nil
+                                                          otherButton:nil
+                                            informativeTextWithFormat:@"Error %ld. There is a communication issue with reaching Radiopaedia and your study could not be uploaded. Make sure you are connected to the internet and try again. ", self.caseCreationStatus];
+                     [GTMOAuth2WindowController removeAuthFromKeychainForName:KEYCHAIN_ITEM];
+                     [myAlert performSelectorOnMainThread:@selector(runModal) withObject:nil waitUntilDone:NO];
+                     return;
+                 }
+                 else if (self.caseCreationStatus != 200 && self.caseCreationStatus != 201)
+                 {
+                     
+                     NSAlert *myAlert = [NSAlert alertWithMessageText:@"Could not upload data"
+                                                        defaultButton:@"OK"
+                                                      alternateButton:nil
+                                                          otherButton:nil
+                                            informativeTextWithFormat:@"Error %ld. This can occur for a variety of reasons. You may, for example. have reached your maximum number of draft cases. To check, please visit your profile page on radiopaedia.org and consider publishing some cases or becoming a supporter. ", self.caseCreationStatus];
+                     [GTMOAuth2WindowController removeAuthFromKeychainForName:KEYCHAIN_ITEM];
+                     [myAlert performSelectorOnMainThread:@selector(runModal) withObject:nil waitUntilDone:NO];
+                     return;
                  }
                  self.seriesNames = [NSMutableArray array];
                  self.queuedRequests = [NSMutableArray array];
+                 self.seriesDescriptions = [NSMutableArray array];
+                 
+                 
+                 NSArray *sortedArray;
+                 sortedArray = [self.selectedSeries sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+                     NSDate *first = [(DicomSeries *)[(NSMutableArray *)a firstObject] date];
+                     NSDate *second = [(DicomSeries *)[(NSMutableArray *)b firstObject] date];
+                     return [first compare:second];
+                 }];
+                 
                  NSUInteger i = 0;
-                 for (NSMutableArray *seriesArray in self.selectedSeries) {
-                     [self processSeriesArray:seriesArray with:self.caseId using:auth withDicom:[self.selectedStudies objectAtIndex:i]];
+                 for (NSMutableArray *seriesArray in sortedArray) {
+                     [self processSeriesArray:seriesArray with:self.caseId using:auth withDicom:(DicomStudy *)[seriesArray firstObject]];
                      i++;
                  }
+                 
+                 
+                 // add final request (mark upload finished)
+                 
+                 NSMutableDictionary *paramsDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                                    nil];
+                 NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
+                 NSString *urlString = [NSString stringWithFormat:@"https://radiopaedia.org/api/v1/cases/%@/mark_upload_finished", self.caseId];
+                 NSMutableURLRequest *request2  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:urlString]
+                                                                                paramString:paramStr];
+                 request2.HTTPMethod = @"PUT";
+                 [auth authorizeRequest:request2 completionHandler:^(NSError *err)
+                  {
+                      if (err == nil) {
+                          [self.queuedRequests insertObject:request2 atIndex:0];
+                      }
+                      else{
+                      }
+                      
+                  }];
+                 [self.seriesNames insertObject:@"Finalizing case..." atIndex:0];
                  
                  // start processing queue of requests
                  [self startProcessingQueue];
@@ -248,12 +303,12 @@
              
              else{
                  // Failed to authorize for some reason
-                 NSAlert *myAlert = [NSAlert alertWithMessageText:@"Hello World!"
-                                                    defaultButton:@"Hello"
+                 NSAlert *myAlert = [NSAlert alertWithMessageText:@"Failed to upload"
+                                                    defaultButton:@"OK"
                                                   alternateButton:nil
                                                       otherButton:nil
-                                        informativeTextWithFormat:@"Failed %ld", (long)[error code]];
-                 
+                                        informativeTextWithFormat:@"Your login has expired! Please relogin. Error %d %@", (int)[err code], err];
+                 [GTMOAuth2WindowController removeAuthFromKeychainForName:KEYCHAIN_ITEM];
                  [myAlert performSelectorOnMainThread:@selector(runModal) withObject:nil waitUntilDone:NO];
              }
 
@@ -289,6 +344,10 @@
     {
         return @"X-ray";
     }
+    else if ([modality isEqualToString:@"DX"])
+    {
+        return @"X-ray";
+    }
     else if ([modality isEqualToString:@"RF"])
     {
         return @"Fluoroscopy";
@@ -311,8 +370,23 @@
     if (modality != nil && [modality length] > 0)
         [paramsDict setObject:modality forKey:@"modality"];
     
+    if ([study date] != nil && self.caseDate != nil && self.addStudyDaysAsCaption && [self.selectedSeries count] > 1)
+    {
+        NSTimeInterval t = [study.date timeIntervalSinceDate:self.caseDate];
+        int days = (int)(t / 3600.0 / 24 + 0.5);
+        [paramsDict setObject:[NSString stringWithFormat:@"Day %d", days+1] forKey:@"caption"];
+    }
+    if(self.addStudyNamesAsFindings)
+    {
+    NSMutableArray *seriesNames = [NSMutableArray array];
+    for (DicomSeries *series in seriesArray)
+    {
+        [seriesNames addObject:[series name]];
+    }
+    [paramsDict setObject:[seriesNames componentsJoinedByString: @","] forKey:@"findings"];    
+    }
     NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
-    NSString *urlString = [NSString stringWithFormat:@"http://sandbox.radiopaedia.org/api/v1/cases/%@/studies", caseId];
+    NSString *urlString = [NSString stringWithFormat:@"https://radiopaedia.org/api/v1/cases/%@/studies", caseId];
     NSMutableURLRequest *request  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:urlString]
                                                                   paramString:paramStr];
     request.HTTPMethod = @"POST";
@@ -340,7 +414,7 @@
                  NSMutableDictionary *paramsDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                                       nil];
                  NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
-                 NSString *urlString = [NSString stringWithFormat:@"http://sandbox.radiopaedia.org/api/v1/cases/%@/studies/%@/images", caseId, studyId];
+                 NSString *urlString = [NSString stringWithFormat:@"https://radiopaedia.org/api/v1/cases/%@/studies/%@/images", caseId, studyId];
                  NSMutableURLRequest *request2  = [GTMOAuth2SignIn mutableURLRequestWithURL:[NSURL URLWithString:urlString]
                                                                               paramString:paramStr];
                  request2.HTTPMethod = @"POST";
@@ -354,13 +428,14 @@
                  [auth authorizeRequest:request2 completionHandler:^(NSError *err)
                   {
                       if (err == nil) {
-                          [self.queuedRequests addObject:request2];
+                          [self.queuedRequests insertObject:request2 atIndex:0];
+
                       }
                       else{
                       }
                       
                   }];
-                 [self.seriesNames addObject:[series name]];
+                 [self.seriesNames insertObject:[series name] atIndex:0];
                  seriesIndex++;
              }
              
@@ -373,7 +448,7 @@
                                                 defaultButton:@"Ok"
                                               alternateButton:nil
                                                   otherButton:nil
-                                    informativeTextWithFormat:@"Failed to upload %@: %@",[study name], [err description]];
+                                    informativeTextWithFormat:@"Failed to upload %@: %@, Error code %ld",[study name], [err description], (long)[err code]];
              
              [myAlert runModal];
          }
@@ -383,32 +458,9 @@
 
     
 }
-
-- (long) filterImage:(NSString*) menuName
+-(void) processImages:(float) compressionFactorVal
 {
-    self.patientAge = @"";
-    self.patientSex = @"Unknown";
-    self.patientAgeInt = 999999;
-   /* NSString* message = [[NSUserDefaults standardUserDefaults] stringForKey:@"HelloWorld_Message"];
-    if (!message) message = @"Define this message in the Hello World plugin's preferences";
     
-    NSAlert *myAlert = [NSAlert alertWithMessageText:@"Hello World!"
-                                       defaultButton:@"Hello"
-                                     alternateButton:nil
-                                         otherButton:nil
-                           informativeTextWithFormat:@"%@", message];
-    
-    [myAlert runModal];*/
-    
-    /*
-     
-     Many thanks to wonderful blog at http://myfirstosirixplugin.blogspot.com.au/   !!!!
-     
-     */
-    
-    
-
-  
     BrowserController *currentBrowser = [BrowserController currentBrowser];
     NSArray *selectedItems = [currentBrowser databaseSelection];
     
@@ -424,31 +476,18 @@
     self.selectedSeries = [NSMutableArray array];
     self.zipFiles = [NSMutableArray array];
     for (id item in selectedItems) {
-        if ([item isKindOfClass:[DicomStudy class]]) {
-            DicomStudy *study = (DicomStudy*) item;
-            
-            [self.selectedStudies addObject:study];
-            
-            NSMutableArray *tempArray = [NSMutableArray array];
-            [self.selectedSeries addObject:tempArray];
-            
-            for (DicomSeries *series in [study imageSeries])
-            {
-                [tempArray addObject:series];
-            }
-            
-        } else if ([item isKindOfClass:[DicomSeries class]])
+        if ([item isKindOfClass:[DicomSeries class]])
         {
             DicomSeries *series = (DicomSeries *)item;
             NSMutableArray *tempArray;
             
             if (![self.selectedStudies containsObject:[series study]])
-              {
-                  // insert new study and create temp array
-                  [self.selectedStudies addObject:[series study]];
-                  tempArray = [NSMutableArray array];
-                  [self.selectedSeries addObject:tempArray];
-              }
+            {
+                // insert new study and create temp array
+                [self.selectedStudies addObject:[series study]];
+                tempArray = [NSMutableArray array];
+                [self.selectedSeries addObject:tempArray];
+            }
             else
             {
                 // get previous temp array
@@ -459,32 +498,76 @@
             [tempArray addObject:(DicomSeries*) item];
         }
     }
+    for (id item in selectedItems) {
+        if ([item isKindOfClass:[DicomStudy class]]) {
+            DicomStudy *study = (DicomStudy*) item;
+            // if specific series were selected - ignore entire study
+            if ([self.selectedStudies containsObject:study])
+            {
+                
+            }
+            else
+            {
+                [self.selectedStudies addObject:study];
+                
+                NSMutableArray *tempArray = [NSMutableArray array];
+                [self.selectedSeries addObject:tempArray];
+                
+                for (DicomSeries *series in [study imageSeries])
+                {
+                    [tempArray addObject:series];
+                }
+            }
+            
+        }
+    }
     
     
     // Process dicom series
-    NSNumber *compressionFactor = [NSNumber numberWithFloat:0.5];
+    NSNumber *compressionFactor = [NSNumber numberWithFloat:compressionFactorVal];
     NSDictionary *imageProps = [NSDictionary dictionaryWithObject:compressionFactor
                                                            forKey:NSImageCompressionFactor];
     
+    NSNumber *compressionFactorCT = [NSNumber numberWithFloat:0.7];
+    NSDictionary *imagePropsCT = [NSDictionary dictionaryWithObject:compressionFactorCT
+                                                           forKey:NSImageCompressionFactor];
+    
+    
+    NSNumber *compressionFactorMRI = [NSNumber numberWithFloat:0.9];
+    NSDictionary *imagePropsMRI = [NSDictionary dictionaryWithObject:compressionFactorMRI
+                                                           forKey:NSImageCompressionFactor];
     
     
     for (NSMutableArray *seriesArray in self.selectedSeries)
     {
-    
+        
         NSMutableArray *tempArray = [NSMutableArray array];
         [self.zipFiles addObject:tempArray];
         for (DicomSeries *series in seriesArray)
         {
             DicomStudy *study = [series study];
             NSTimeInterval t = [study.date timeIntervalSinceDate:study.dateOfBirth];
-            int tempAge = (int)(t / 3600.0 / 24 / 365);
+            float tempAge = (float)(t / 3600.0 / 24 / 365);
+            if (self.caseDate == nil || (self.caseDate != nil && (int )[study.date timeIntervalSinceDate:self.caseDate] < 0 ))
+                {
+                    self.caseDate = study.date;
+                }
             if (tempAge > 0)
             {
                 
-                if(tempAge < self.patientAgeInt)
+                if(tempAge < self.patientAgeFloat)
                 {
-                    self.patientAge = [NSString stringWithFormat:@"%d", tempAge];
-                    self.patientAgeInt = tempAge;
+                    if (tempAge > 2.0f)
+                        self.patientAge = [NSString stringWithFormat:@"%d years", (int )tempAge];
+                    else if (tempAge > (2.0f / 12.0f))
+                        self.patientAge = [NSString stringWithFormat:@"%d months", (int )(tempAge * 12)];
+                    else if (tempAge > (14.0f / 365.0f))
+                        self.patientAge = [NSString stringWithFormat:@"%d weeks", (int )(tempAge * 52)];
+                    else
+                        self.patientAge = [NSString stringWithFormat:@"%d days", (int )(tempAge * 365)];
+                    
+                    self.patientAgeFloat = tempAge;
+                    
                 }
             }
             if ([study.patientSex isEqualToString:@"M"])
@@ -518,14 +601,28 @@
                     im = [[[NSImage alloc] initWithData: data] autorelease];
                 }
                 imageRep = [[im representations] objectAtIndex:0];
-                
-                
-                NSData *imageData = [imageRep representationUsingType:NSJPEGFileType properties:imageProps];
+                NSString *modality = [image modality];
+                NSData *imageData;
+                if ([modality isEqualToString:@"MR"])
+                {
+                    imageData = [imageRep representationUsingType:NSJPEGFileType properties:imagePropsMRI];
+                }
+                else if ([modality isEqualToString:@"CT"])
+                {
+                    imageData = [imageRep representationUsingType:NSJPEGFileType properties:imagePropsCT];
+
+                }
+                else
+                {
+                    imageData = [imageRep representationUsingType:NSJPEGFileType properties:imageProps];
+
+                }
+
                 NSString *imageName = [NSString stringWithFormat:@"%@.jpg", [[image instanceNumber] stringValue]];
                 OZZipWriteStream *stream= [zipFile writeFileInZipWithName:imageName
                                                          compressionLevel:OZZipCompressionLevelBest];
                 [stream writeData:imageData];
-                [stream finishedWriting];       
+                [stream finishedWriting];
             }
             [zipFile close];
             
@@ -533,44 +630,95 @@
         }
     }
     
+
+}
+- (long) filterImage:(NSString*) menuName
+{
+    self.patientAge = @"";
+    self.patientSex = @"Unknown";
+    self.patientAgeFloat = 999999.0f;
+    self.caseDate = nil;
+   /* NSString* message = [[NSUserDefaults standardUserDefaults] stringForKey:@"HelloWorld_Message"];
+    if (!message) message = @"Define this message in the Hello World plugin's preferences";
     
+    NSAlert *myAlert = [NSAlert alertWithMessageText:@"Hello World!"
+                                       defaultButton:@"Hello"
+                                     alternateButton:nil
+                                         otherButton:nil
+                           informativeTextWithFormat:@"%@", message];
+    
+    [myAlert runModal];*/
+    
+    /*
+     
+     Many thanks to wonderful blog at http://myfirstosirixplugin.blogspot.com.au/   !!!!
+     
+     */
+    
+    
+    [self processImages:0.65];
+    
+    NSURL *tokenURL = [NSURL URLWithString:@"https://radiopaedia.org/oauth/token"];
+    
+    // We'll make up an arbitrary redirectURI.  The controller will watch for
+    // the server to redirect the web view to this URI, but this URI will not be
+    // loaded, so it need not be for any actual web page.
+    NSString *redirectURI = @"urn:ietf:wg:oauth:2.0:oob";
+    
+    GTMOAuth2Authentication *auth;
+    auth = [GTMOAuth2Authentication authenticationWithServiceProvider:@"Radiopaedia"
+                                                             tokenURL:tokenURL
+                                                          redirectURI:redirectURI
+                                                             clientID:YOUR_ID_HERE
+                                                         clientSecret:YOUR_SECRET_HERE
+            ];
+    auth.scope = @"cases";
+    NSURL *authURL = [NSURL URLWithString:@"https://radiopaedia.org/oauth/authorize"];
+    
+    self.isSignedIn = false;
+    if (auth) {
+        BOOL didAuth = [GTMOAuth2WindowController authorizeFromKeychainForName:KEYCHAIN_ITEM
+                                                                authentication:auth];
+        // if the auth object contains an access token, didAuth is now true
+        if (didAuth)
+        {
+            self.isSignedIn = [auth canAuthorize];
+            
+        }
+    }
+    
+
     
     // Here we try to retrieve the cases
     self.detailsController = [[EnterDetailsWindowController alloc] initWithWindowNibName:@"EnterDetailsWindow"];
     //[self.detailsController showWindow:nil];
+    
     self.detailsController.parent = self;
+    
     // REMEMBER MEMORY ON XIB FILE SHOULD BE BUFFERED
     self.originalWindow = [NSApp keyWindow];
     [self.originalWindow beginSheet:self.detailsController.window completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseOK)
         {
-            NSURL *tokenURL = [NSURL URLWithString:@"http://sandbox.radiopaedia.org/oauth/token"];
-            
-            // We'll make up an arbitrary redirectURI.  The controller will watch for
-            // the server to redirect the web view to this URI, but this URI will not be
-            // loaded, so it need not be for any actual web page.
-            NSString *redirectURI = @"urn:ietf:wg:oauth:2.0:oob";
-            
-            GTMOAuth2Authentication *auth;
-            auth = [GTMOAuth2Authentication authenticationWithServiceProvider:@"Radiopaedia"
-                                                                     tokenURL:tokenURL
-                                                                  redirectURI:redirectURI
-                                                                     clientID:@"9c2d8456fb2798a7bf0406fa4c6a516f57d74b1b0abd13889e4bf831ba5a2735"
-                                                                 clientSecret:@"4ace663418bbe8e4557d0df18452eca90cd768204f1a950984fcae359dc555b0"];
-            auth.scope = @"cases";
-            NSURL *authURL = [NSURL URLWithString:@"http://sandbox.radiopaedia.org/oauth/authorize"];
             
             
-            self.windowController = [GTMOAuth2WindowController controllerWithAuthentication:auth
-                                                                      authorizationURL:authURL
-                                                                      keychainItemName:@"Radiopaedia Osirix"
-                                                                        resourceBundle:nil];
-            
-            NSString *html = @"<html><body><div align=center>Loading sign-in page...</div></body></html>";
-            [self.windowController setInitialHTMLString:html];
-            [self.windowController signInSheetModalForWindow:self.originalWindow
-                                               delegate:self
-                                       finishedSelector:@selector(viewController:finishedWithAuth:error:)];
+            if (!self.isSignedIn)
+            {
+                self.windowController = [GTMOAuth2WindowController controllerWithAuthentication:auth
+                                                                          authorizationURL:authURL
+                                                                          keychainItemName:KEYCHAIN_ITEM
+                                                                            resourceBundle:nil];
+                
+                NSString *html = @"<html><body><div align=center>Loading sign-in page...</div></body></html>";
+                [self.windowController setInitialHTMLString:html];
+                [self.windowController  signInSheetModalForWindow:self.originalWindow
+                                                   delegate:self
+                                           finishedSelector:@selector(viewController:finishedWithAuth:error:)];
+            }
+            else
+            {
+                [self viewController:nil finishedWithAuth:auth error:nil];
+            }
         }
     }];
    
@@ -617,16 +765,26 @@
     }
     else
     {
+        
         [self.progressController close];
         self.finishedWindowController = [[FinishedWindowController alloc] initWithWindowNibName:@"FinishedWindow"];
         self.finishedWindowController.parent = self;
-        
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+        self.finishedWindowController.statusCode = @"Your case has uploaded successfully!";
+        if ([httpResponse statusCode] != 200 && [httpResponse statusCode] != 201)
+            self.finishedWindowController.statusCode = [NSString stringWithFormat:@"Error in uploading - status code: %ld. If you have reached your maximum number of draft cases then we suggest you publish some of your cases or become a Radiopaedia supporter to increase your draft case allowance.", [httpResponse statusCode]];
+        if (self.caseCreationStatus != 200 && self.caseCreationStatus != 201)
+            self.finishedWindowController.statusCode = [NSString stringWithFormat:@"Error in creating case - status code: %ld. If you have reached your maximum number of draft cases then we suggest you publish some of your cases or become a Radiopaedia supporter to increase your draft case allowance.", self.caseCreationStatus];
+        if ([httpResponse statusCode] == 0 || self.caseCreationStatus == 0)
+        {
+            self.finishedWindowController.statusCode = [NSString stringWithFormat:@"Error in creating case - status code: %ld. There is a communication issue with reaching Radiopaedia and your study could not be uploaded. Make sure you are connected to the internet and try again.", self.caseCreationStatus];
+        }
         [self.originalWindow beginSheet:self.finishedWindowController.window completionHandler:^(NSModalResponse returnCode) {
            
         }];
     }
     /*
-     <NSHTTPURLResponse: 0x7f88b9923040> { URL: http://sandbox.radiopaedia.org/api/v1/cases/110/studies/43979/images } { status code: 201, headers {
+     <NSHTTPURLResponse: 0x7f88b9923040> { URL: http://radiopaedia.org/api/v1/cases/110/studies/43979/images } { status code: 201, headers {
      Age = 0;
      "Cache-Control" = "max-age=0, private, must-revalidate";
      Connection = "keep-alive";
@@ -634,7 +792,7 @@
      "Content-Type" = "application/json";
      Date = "Thu, 07 Apr 2016 21:17:18 GMT";
      Etag = "\"3043e56510ae52e1d05e6830ca72bc39\"";
-     Location = "http://sandbox.radiopaedia.org/cases/110/images/23422";
+     Location = "http://radiopaedia.org/cases/110/images/23422";
      Status = "201 Created";
      "X-Powered-By" = TrikeApps;
      "X-UA-Compatible" = "IE=Edge,chrome=1";

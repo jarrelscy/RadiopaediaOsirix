@@ -6,3 +6,7 @@
     #import <Foundation/Foundation.h>
     #import <AppKit/AppKit.h>
 #endif
+
+
+#define KEYCHAIN_ITEM @"Radiopaedia Osirix"
+#define GTM_AUTHORIZE_URL @"https://radiopaedia.org/oauth/authorize"

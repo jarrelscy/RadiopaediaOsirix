@@ -10,6 +10,7 @@
                 <outlet property="hyperlinkLabel" destination="Xps-8L-rk9" id="bXd-Tl-OT9"/>
                 <outlet property="ridLabel" destination="e2s-g1-ad2" id="fxn-ho-uNN"/>
                 <outlet property="seriesLabel" destination="e2s-g1-ad2" id="eAK-J1-ppX"/>
+                <outlet property="statusLabel" destination="oQ9-cy-t7q" id="dMK-FX-hLl"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="hfp-52-0fJ"/>
             </connections>
         </customObject>

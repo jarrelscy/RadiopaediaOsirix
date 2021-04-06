@@ -16,7 +16,7 @@
 #if GTM_INCLUDE_OAUTH2 || !GDATA_REQUIRE_SERVICE_INCLUDES
 
 #import "GTMOAuth2Authentication.h"
-
+#import "GTMOAuth2WindowController.h"
 // Extern strings
 
 NSString *const kGTMOAuth2ServiceProviderGoogle = @"Google";
@@ -487,6 +487,11 @@ finishedRefreshWithFetcher:(GTMOAuth2Fetcher *)fetcher
       // Successful refresh.
       noteName = kGTMOAuth2AccessTokenRefreshed;
       userInfo = nil;
+        
+        // Jarrel's modification
+        // Save the new refresh token to the keychain else the next time you request a refresh radiopaedia will say that the old refresh token has expired
+        [GTMOAuth2WindowController saveAuthToKeychainForName:KEYCHAIN_ITEM authentication:auth];
+        
     } else {
       // Google's OAuth 2 implementation returns a 400 with JSON body
       // containing error key "invalid_grant" to indicate the refresh token

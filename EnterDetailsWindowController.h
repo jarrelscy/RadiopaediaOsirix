@@ -20,10 +20,20 @@
 {
 
 }
-
+- (IBAction)openTipsAndTricks:(id)sender;
+@property (strong) NSArray *titles;
+@property (strong) NSArray *indexOfSelected;
+-(long) getSelectedIndex;
 - (void)windowDidLoad;
 -(void) awakeFromNib;
+@property (strong) IBOutlet NSTextField *supportLabel;
+@property (strong) IBOutlet NSButton *addStudyNameCheck;
+@property (strong) IBOutlet NSButton *addStudyDaysCheck;
 @property (strong) id parent;
+@property (strong) IBOutlet NSButton *logoutButton;
+@property (strong) IBOutlet NSButton *okButton;
+@property (strong) IBOutlet NSSlider *compressionSlider;
+@property (strong) IBOutlet NSTextField *compressionValueField;
 @property (strong) IBOutlet NSTextField *caserIDField;
 @property (strong) IBOutlet NSTextField *caseTitleField;
 @property (strong) IBOutlet NSPopUpButton *systemSelect;

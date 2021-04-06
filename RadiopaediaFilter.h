@@ -19,17 +19,24 @@
 @property (nonatomic, strong) NSMutableArray *seriesNames;
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *patientAge;
-@property (nonatomic) int patientAgeInt;
+@property (nonatomic) float patientAgeFloat;
+@property (nonatomic) bool isSignedIn;
+@property (nonatomic) float compressionValue;
+@property (nonatomic, strong) NSDate *caseDate;
 @property (nonatomic, strong) NSString *patientSex;
 @property (nonatomic, strong) NSString *returnedCaseTitle;
 @property (nonatomic, strong) NSString *caseId;
 @property (nonatomic, strong) NSString *system;
+@property (nonatomic) long caseCreationStatus;
 @property (nonatomic, strong) NSMutableArray *queuedRequests;
+@property (nonatomic, strong) NSMutableArray *seriesDescriptions;
 @property (nonatomic, strong) FinishedWindowController* finishedWindowController;
 @property (nonatomic, strong) EnterDetailsWindowController *detailsController;
 @property (nonatomic, strong) ProgressWindowController *progressController;
 @property (nonatomic, strong) NSWindow *originalWindow;
 @property (nonatomic, strong) GTMOAuth2WindowController *windowController;
+@property (nonatomic) bool addStudyDaysAsCaption;
+@property (nonatomic) bool addStudyNamesAsFindings;
 -(void) alert:(NSArray *)info;
 
 - (long) filterImage:(NSString*) menuName;

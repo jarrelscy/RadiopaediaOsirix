@@ -8,6 +8,8 @@
 	<string>Radiopaedia</string>
 	<key>CFBundleIconFile</key>
 	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -16,12 +18,12 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
-	<key>NSPrincipalClass</key>
-	<string>RadiopaediaFilter</string>
 	<key>MenuTitles</key>
 	<array>
 		<string>Radiopaedia</string>
 	</array>
+	<key>NSPrincipalClass</key>
+	<string>RadiopaediaFilter</string>
 	<key>pluginType</key>
 	<string>Database</string>
 </dict>
